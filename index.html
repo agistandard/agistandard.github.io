@@ -1,627 +1,1052 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AGI Standard - Global Union for Artificial General Intelligence Standards</title>
-    <meta name="description" content="A global platform unifying standards for Artificial General Intelligence and protecting humanity from its risks">
-    <meta name="keywords" content="AGI, artificial general intelligence, standards, AI safety, global governance">
-    <meta name="author" content="AGI Standard Initiative">
-    <meta property="og:title" content="AGI Standard - Global Union for AGI Standards">
-    <meta property="og:description" content="The global platform for unified AGI standards and governance">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AGI Standard — Global Union for Artificial General Intelligence Standards</title>
+  <meta name="description" content="A global platform unifying standards for Artificial General Intelligence and protecting humanity from its risks" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        :root {
-            --primary: #0f172a;
-            --secondary: #1e293b;
-            --accent: #3b82f6;
-            --accent-light: #60a5fa;
-            --text-light: #f1f5f9;
-            --border: #334155;
-        }
+    :root {
+      --ink:     #050a0f;
+      --surface: #080e16;
+      --panel:   #0c1521;
+      --edge:    #112030;
+      --mid:     #1a3050;
+      --glow:    #00c6ff;
+      --glow2:   #0072ff;
+      --white:   #e8f2ff;
+      --muted:   #6a90b8;
+      --warn:    #ff6b2b;
+      --gold:    #c8a44a;
+      --mono:    'JetBrains Mono', monospace;
+      --head:    'Syne', sans-serif;
+      --body:    'DM Sans', sans-serif;
+      --r: 10px;
+    }
 
-        html {
-            scroll-behavior: smooth;
-        }
+    html { scroll-behavior: smooth; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: var(--text-light);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+    body {
+      font-family: var(--body);
+      background: var(--ink);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            padding: 1rem 2rem;
-        }
+    /* ── Custom Cursor ─────────────────────────────── */
+    #cursor {
+      position: fixed; z-index: 9999; pointer-events: none;
+      width: 12px; height: 12px;
+      background: var(--glow);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: screen;
+      transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
+    }
+    #cursor-ring {
+      position: fixed; z-index: 9998; pointer-events: none;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(0,198,255,0.4);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 0.15s ease, width 0.3s, height 0.3s;
+    }
+    body:hover #cursor { opacity: 1; }
 
-        nav .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    /* ── Noise Overlay ─────────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      pointer-events: none;
+    }
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--accent-light);
-            text-decoration: none;
-        }
+    /* ── NAV ───────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 800;
+      height: 68px;
+      display: flex; align-items: center;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      background: rgba(5,10,15,0.7);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(0,198,255,0.08);
+    }
+    .nav-inner {
+      max-width: 1300px; margin: 0 auto; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .logo {
+      font-family: var(--head);
+      font-size: 1.15rem; font-weight: 800;
+      letter-spacing: 0.08em; text-decoration: none;
+      color: var(--white);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .logo-mark {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--glow), var(--glow2));
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      flex-shrink: 0;
+    }
+    .logo span { color: var(--glow); }
+    .nav-links {
+      display: flex; list-style: none; gap: 2.5rem; align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--mono); font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.25s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 1px; background: var(--glow);
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--glow); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-cta {
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 0.5rem 1.2rem;
+      border: 1px solid var(--glow);
+      color: var(--glow);
+      border-radius: 4px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .nav-cta:hover { background: var(--glow); color: var(--ink); }
 
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
+    /* ── HERO ──────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 120px 2rem 80px;
+      overflow: hidden;
+    }
 
-        nav a {
-            color: var(--text-light);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.9rem;
-        }
+    /* Animated grid */
+    .grid-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(0,198,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,198,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridDrift 20s linear infinite;
+    }
+    @keyframes gridDrift {
+      from { background-position: 0 0; }
+      to   { background-position: 60px 60px; }
+    }
 
-        nav a:hover {
-            color: var(--accent-light);
-        }
+    /* Orb glows */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(100px); pointer-events: none;
+      animation: orbPulse 8s ease-in-out infinite alternate;
+    }
+    .orb-1 {
+      width: 600px; height: 600px; top: -100px; left: -100px;
+      background: radial-gradient(circle, rgba(0,114,255,0.12), transparent 70%);
+      animation-delay: 0s;
+    }
+    .orb-2 {
+      width: 500px; height: 500px; bottom: -80px; right: -80px;
+      background: radial-gradient(circle, rgba(0,198,255,0.1), transparent 70%);
+      animation-delay: -4s;
+    }
+    .orb-3 {
+      width: 300px; height: 300px; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(200,164,74,0.06), transparent 70%);
+      animation-delay: -2s;
+    }
+    @keyframes orbPulse {
+      from { opacity: 0.6; transform: scale(1); }
+      to   { opacity: 1;   transform: scale(1.15); }
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+    .hero-content {
+      position: relative; z-index: 2; max-width: 900px; margin: 0 auto;
+    }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding-top: 80px;
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%),
-                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(59,130,246,0.1)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="url(%23grid)"/></svg>');
-            background-attachment: fixed;
-        }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--glow);
+      border: 1px solid rgba(0,198,255,0.2);
+      background: rgba(0,198,255,0.05);
+      padding: 0.4rem 1rem; border-radius: 100px;
+      margin-bottom: 2.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--glow);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; } 50% { opacity: 0.2; }
+    }
 
-        .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent-light) 0%, #93c5fd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: fadeInDown 1s ease-out;
-        }
+    .hero h1 {
+      font-family: var(--head);
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 800; line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+    .hero h1 .line-1 { display: block; color: var(--white); }
+    .hero h1 .line-2 {
+      display: block;
+      background: linear-gradient(90deg, var(--glow) 0%, var(--glow2) 50%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shimmer 4s linear infinite, fadeUp 0.8s 0.2s ease both;
+    }
+    @keyframes shimmer {
+      from { background-position: 200% center; }
+      to   { background-position: 0% center; }
+    }
 
-        .hero-content p {
-            font-size: 1.3rem;
-            color: #cbd5e1;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
+    .hero-sub {
+      font-size: 1.15rem; font-weight: 300; color: var(--muted);
+      max-width: 580px; margin: 0 auto 3rem;
+      line-height: 1.7;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
 
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
+    .hero-btns {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 0.8s 0.4s ease both;
+    }
 
-        .btn {
-            padding: 0.8rem 2rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            font-weight: 600;
-        }
+    .btn-glow {
+      position: relative; overflow: hidden;
+      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 0.85rem 2.2rem;
+      background: linear-gradient(135deg, var(--glow2), var(--glow));
+      color: var(--ink); font-weight: 600;
+      border-radius: 6px; border: none; cursor: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-glow::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2));
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,198,255,0.35); }
+    .btn-glow:hover::after { opacity: 1; }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
+    .btn-ghost {
+      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.12em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 0.85rem 2.2rem;
+      background: transparent;
+      color: var(--white);
+      border: 1px solid var(--edge);
+      border-radius: 6px; cursor: none;
+      transition: border-color 0.25s, color 0.25s, transform 0.2s;
+    }
+    .btn-ghost:hover { border-color: var(--glow); color: var(--glow); transform: translateY(-3px); }
 
-        .btn-primary:hover {
-            background: var(--accent-light);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
-        }
+    /* Hero stats bar */
+    .hero-stats {
+      display: flex; justify-content: center; gap: 0; margin-top: 5rem;
+      border: 1px solid var(--edge);
+      border-radius: var(--r);
+      overflow: hidden; max-width: 700px; margin-left: auto; margin-right: auto;
+      animation: fadeUp 0.8s 0.6s ease both;
+    }
+    .stat {
+      flex: 1; padding: 1.4rem 1rem; text-align: center;
+      border-right: 1px solid var(--edge);
+      background: rgba(255,255,255,0.02);
+      transition: background 0.25s;
+    }
+    .stat:last-child { border-right: none; }
+    .stat:hover { background: rgba(0,198,255,0.05); }
+    .stat-num {
+      font-family: var(--head); font-size: 1.8rem; font-weight: 800;
+      color: var(--glow); line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .stat-label {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--muted);
+    }
 
-        .btn-secondary {
-            background: transparent;
-            color: var(--accent-light);
-            border: 2px solid var(--accent-light);
-        }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        .btn-secondary:hover {
-            background: var(--accent-light);
-            color: var(--primary);
-            transform: translateY(-2px);
-        }
+    /* ── SECTION BASE ──────────────────────────────── */
+    section { position: relative; z-index: 2; }
+    .wrap { max-width: 1300px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
 
-        /* Features Section */
-        .features {
-            padding: 5rem 0;
-            background: var(--secondary);
-        }
+    .section-label {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--glow);
+      margin-bottom: 0.8rem; display: block;
+    }
+    .section-title {
+      font-family: var(--head); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      color: var(--white); line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .section-sub {
+      font-size: 1rem; font-weight: 300; color: var(--muted);
+      max-width: 520px; line-height: 1.7;
+    }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: var(--accent-light);
-        }
+    /* ── MARQUEE ───────────────────────────────────── */
+    .marquee-wrap {
+      padding: 1.8rem 0;
+      background: var(--panel);
+      border-top: 1px solid var(--edge);
+      border-bottom: 1px solid var(--edge);
+      overflow: hidden; position: relative; z-index: 2;
+    }
+    .marquee-track {
+      display: flex; gap: 3rem; width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--muted);
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .marquee-item::after { content: '◆'; color: var(--glow); font-size: 0.5rem; }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
+    /* ── PILLARS ───────────────────────────────────── */
+    .pillars { padding: 8rem 0; background: var(--surface); }
+    .pillars-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem;
+    }
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--edge);
+      border: 1px solid var(--edge);
+      border-radius: var(--r);
+      overflow: hidden;
+    }
+    .pillar {
+      background: var(--panel);
+      padding: 2.5rem;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .pillar::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--glow), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .pillar:hover { background: rgba(0,198,255,0.04); }
+    .pillar:hover::before { opacity: 1; }
+    .pillar-num {
+      font-family: var(--mono); font-size: 0.65rem; color: var(--glow);
+      letter-spacing: 0.16em; margin-bottom: 1.5rem;
+    }
+    .pillar-icon {
+      font-size: 2rem; margin-bottom: 1rem; display: block;
+    }
+    .pillar h3 {
+      font-family: var(--head); font-size: 1.2rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.75rem;
+    }
+    .pillar p {
+      font-size: 0.9rem; font-weight: 300; color: var(--muted);
+      line-height: 1.7;
+    }
+    .pillar-arrow {
+      position: absolute; bottom: 2rem; right: 2rem;
+      width: 32px; height: 32px;
+      border: 1px solid var(--edge); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.8rem;
+      transition: border-color 0.25s, color 0.25s, transform 0.25s;
+    }
+    .pillar:hover .pillar-arrow { border-color: var(--glow); color: var(--glow); transform: translate(2px, -2px); }
 
-        .feature-card {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 0.75rem;
-            transition: all 0.3s;
-        }
+    /* ── WHY SECTION ───────────────────────────────── */
+    .why { padding: 8rem 0; }
+    .why-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    }
+    .why-visual {
+      position: relative; aspect-ratio: 1;
+    }
+    .globe-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 1px solid rgba(0,198,255,0.12);
+      animation: rotateSlow 30s linear infinite;
+    }
+    .globe-ring:nth-child(2) {
+      inset: 10%; border-color: rgba(0,198,255,0.08);
+      animation-duration: 20s; animation-direction: reverse;
+    }
+    .globe-ring:nth-child(3) {
+      inset: 25%; border-color: rgba(200,164,74,0.15);
+      animation-duration: 15s;
+    }
+    .globe-center {
+      position: absolute; inset: 35%;
+      background: radial-gradient(circle at 40% 40%, var(--glow2), var(--ink));
+      border-radius: 50%;
+      box-shadow: 0 0 60px rgba(0,114,255,0.4), 0 0 120px rgba(0,114,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+    }
+    @keyframes rotateSlow {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .node {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--glow);
+      box-shadow: 0 0 12px var(--glow);
+      animation: nodeFloat 6s ease-in-out infinite alternate;
+    }
+    .node:nth-child(4) { top: 10%; left: 50%; animation-delay: 0s; }
+    .node:nth-child(5) { top: 50%; right: 5%; animation-delay: -2s; }
+    .node:nth-child(6) { bottom: 15%; left: 20%; animation-delay: -4s; }
+    .node:nth-child(7) { top: 30%; left: 5%; animation-delay: -1s; background: var(--gold); box-shadow: 0 0 12px var(--gold); }
+    @keyframes nodeFloat {
+      from { transform: translate(0,0) scale(1); opacity: 0.7; }
+      to   { transform: translate(4px,-8px) scale(1.3); opacity: 1; }
+    }
 
-        .feature-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
-        }
+    .why-text { }
+    .why-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .why-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.2rem 1.4rem;
+      border: 1px solid var(--edge); border-radius: var(--r);
+      background: rgba(255,255,255,0.02);
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .why-item:hover { border-color: rgba(0,198,255,0.25); background: rgba(0,198,255,0.04); }
+    .why-check {
+      width: 20px; height: 20px; flex-shrink: 0;
+      border-radius: 50%; background: rgba(0,198,255,0.12);
+      border: 1px solid rgba(0,198,255,0.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: var(--glow); margin-top: 1px;
+    }
+    .why-item-text { font-size: 0.92rem; font-weight: 400; color: #a8c4e0; line-height: 1.5; }
 
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
+    /* ── QUOTE ─────────────────────────────────────── */
+    .quote-band {
+      padding: 5rem 0;
+      background: var(--panel);
+      border-top: 1px solid var(--edge);
+      border-bottom: 1px solid var(--edge);
+      text-align: center;
+    }
+    .quote-band blockquote {
+      font-family: var(--head);
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 600; line-height: 1.4;
+      color: var(--white); max-width: 800px; margin: 0 auto 1.5rem;
+      letter-spacing: -0.01em;
+    }
+    .quote-band blockquote em { color: var(--glow); font-style: normal; }
+    .quote-attr {
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
 
-        .feature-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: var(--accent-light);
-        }
+    /* ── TIMELINE ──────────────────────────────────── */
+    .timeline-section { padding: 8rem 0; background: var(--surface); }
+    .timeline { position: relative; margin-top: 4rem; padding-left: 3rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: linear-gradient(to bottom, transparent, var(--glow), var(--glow2), transparent);
+    }
+    .tl-item {
+      position: relative; margin-bottom: 3rem;
+    }
+    .tl-dot {
+      position: absolute; left: -3.5rem;
+      top: 0.2rem;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--glow); box-shadow: 0 0 16px var(--glow);
+      border: 2px solid var(--ink);
+    }
+    .tl-year {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em;
+      color: var(--glow); margin-bottom: 0.4rem;
+    }
+    .tl-title {
+      font-family: var(--head); font-size: 1.15rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.4rem;
+    }
+    .tl-desc { font-size: 0.9rem; font-weight: 300; color: var(--muted); line-height: 1.6; }
 
-        .feature-card p {
-            color: #cbd5e1;
-            font-size: 0.95rem;
-        }
+    /* ── TEAM / JOIN ───────────────────────────────── */
+    .join-section { padding: 8rem 0; }
+    .join-card {
+      background: var(--panel);
+      border: 1px solid var(--edge);
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+    }
+    .join-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--glow), var(--gold), var(--glow2), transparent);
+    }
+    .join-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    }
+    .join-left {
+      padding: 4rem;
+      border-right: 1px solid var(--edge);
+    }
+    .join-right {
+      padding: 4rem;
+      background: rgba(0,198,255,0.02);
+    }
+    .join-right h3 {
+      font-family: var(--head); font-size: 1.4rem; font-weight: 700;
+      color: var(--white); margin-bottom: 1.5rem;
+    }
+    .roles { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
+    .role-tag {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
+      padding: 0.5rem 1rem; border-radius: 4px;
+      border: 1px solid var(--edge); color: var(--muted);
+      background: rgba(255,255,255,0.02);
+      width: fit-content;
+    }
+    .role-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--glow); }
 
-        /* Mission Section */
-        .mission {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-        }
+    .input-group { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
+    .input-group input {
+      flex: 1; padding: 0.85rem 1.1rem;
+      background: var(--ink); border: 1px solid var(--edge);
+      border-radius: 6px; color: var(--white);
+      font-family: var(--body); font-size: 0.9rem;
+      outline: none; transition: border-color 0.25s;
+    }
+    .input-group input::placeholder { color: var(--muted); }
+    .input-group input:focus { border-color: var(--glow); }
+    .input-note {
+      margin-top: 0.8rem;
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+      color: var(--muted);
+    }
 
-        .mission-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
+    /* ── DISCLAIMER ────────────────────────────────── */
+    .disclaimer-section {
+      padding: 4rem 0;
+      background: var(--panel);
+      border-top: 1px solid var(--edge);
+    }
+    .disclaimer-grid {
+      display: grid; grid-template-columns: 200px 1fr; gap: 3rem; align-items: start;
+    }
+    .disclaimer-label {
+      font-family: var(--head); font-size: 0.8rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--warn); padding-top: 0.2rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .disclaimer-label::before {
+      content: '⚠';
+      font-size: 1rem;
+    }
+    .disclaimer-body {
+      font-size: 0.82rem; font-weight: 300; color: var(--muted);
+      line-height: 1.8; column-count: 2; column-gap: 3rem;
+    }
+    .disclaimer-body strong { color: #8aabcc; font-weight: 500; }
+    .disclaimer-body a { color: var(--glow); text-decoration: none; }
+    .disclaimer-body a:hover { text-decoration: underline; }
 
-        .mission-text h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--accent-light);
-        }
+    /* ── FOOTER ────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      border-top: 1px solid var(--edge);
+      padding: 3rem 0;
+    }
+    .footer-inner {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1.5rem;
+    }
+    .footer-brand {
+      font-family: var(--head); font-size: 0.95rem; font-weight: 800;
+      color: var(--muted); letter-spacing: 0.06em;
+    }
+    .footer-brand span { color: var(--glow); }
+    .footer-copy { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a {
+      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted); text-decoration: none;
+      transition: color 0.25s;
+    }
+    .footer-links a:hover { color: var(--glow); }
 
-        .mission-text p {
-            margin-bottom: 1rem;
-            color: #cbd5e1;
-            line-height: 1.8;
-        }
+    /* ── SCROLL REVEAL ─────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1; transform: translateY(0);
+    }
 
-        .mission-list {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
-        .mission-list li {
-            padding: 0.5rem 0;
-            padding-left: 1rem;
-            color: #cbd5e1;
-            display: flex;
-            align-items: center;
-        }
-
-        .mission-list li:before {
-            content: "✓";
-            color: var(--accent-light);
-            font-weight: bold;
-            margin-right: 0.75rem;
-        }
-
-        /* Join Section */
-        .join {
-            padding: 5rem 0;
-            background: var(--secondary);
-            text-align: center;
-        }
-
-        .join h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--accent-light);
-        }
-
-        .join p {
-            font-size: 1.1rem;
-            color: #cbd5e1;
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .email-form {
-            display: flex;
-            gap: 0.5rem;
-            max-width: 500px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .email-form input {
-            flex: 1;
-            min-width: 250px;
-            padding: 0.8rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 0.5rem;
-            background: rgba(15, 23, 42, 0.5);
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        .email-form input::placeholder {
-            color: #94a3b8;
-        }
-
-        .email-form input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
-        }
-
-        /* Legal Disclaimer Section */
-        .disclaimer {
-            background: rgba(15, 23, 42, 0.8);
-            border-top: 2px solid var(--border);
-            padding: 3rem 0;
-        }
-
-        .disclaimer h3 {
-            color: var(--accent-light);
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        .disclaimer-content {
-            color: #cbd5e1;
-            font-size: 0.9rem;
-            line-height: 1.8;
-        }
-
-        .disclaimer-content p {
-            margin-bottom: 1rem;
-        }
-
-        .disclaimer-content strong {
-            color: var(--accent-light);
-        }
-
-        .disclaimer-footer {
-            margin-top: 2rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: #94a3b8;
-            font-size: 0.85rem;
-        }
-
-        .disclaimer-footer a {
-            color: var(--accent-light);
-            text-decoration: none;
-            margin: 0 1rem;
-        }
-
-        .disclaimer-footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
-            border-top: 1px solid var(--border);
-            padding: 2rem 0;
-            text-align: center;
-            color: #94a3b8;
-        }
-
-        footer p {
-            margin-bottom: 0.5rem;
-        }
-
-        .social-links {
-            margin-top: 1rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-        }
-
-        .social-links a {
-            color: var(--accent-light);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-
-            .hero-content p {
-                font-size: 1rem;
-            }
-
-            nav ul {
-                gap: 1rem;
-                font-size: 0.8rem;
-            }
-
-            .mission-content {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title {
-                font-size: 1.8rem;
-            }
-
-            .email-form {
-                flex-direction: column;
-            }
-
-            .email-form input {
-                min-width: 100%;
-            }
-        }
-    </style>
+    /* ── RESPONSIVE ────────────────────────────────── */
+    @media (max-width: 900px) {
+      .pillars-grid { grid-template-columns: 1fr 1fr; }
+      .why-grid { grid-template-columns: 1fr; }
+      .why-visual { max-width: 360px; margin: 0 auto; }
+      .join-inner { grid-template-columns: 1fr; }
+      .join-left { border-right: none; border-bottom: 1px solid var(--edge); }
+      .disclaimer-grid { grid-template-columns: 1fr; }
+      .disclaimer-body { column-count: 1; }
+      .footer-inner { flex-direction: column; align-items: flex-start; }
+      nav ul { display: none; }
+    }
+    @media (max-width: 600px) {
+      .pillars-grid { grid-template-columns: 1fr; }
+      .hero-stats { flex-direction: column; }
+      .stat { border-right: none; border-bottom: 1px solid var(--edge); }
+      .stat:last-child { border-bottom: none; }
+    }
+  </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="container">
-            <a href="#" class="logo">AGI Standard</a>
-            <ul>
-                <li><a href="#features">Mission</a></li>
-                <li><a href="#mission">Why AGI Standard</a></li>
-                <li><a href="#join">Join Us</a></li>
-                <li><a href="mailto:contact@agistandard.org">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>AGI Standard</h1>
-            <p>Global Union for Artificial General Intelligence Standards</p>
-            <p style="font-size: 1rem; color: #94a3b8; margin-bottom: 2rem;">
-                A global platform uniting scientists and experts from all nations to establish unified, safe standards for Artificial General Intelligence
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <div class="logo-mark"></div>
+        AGI<span>Standard</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#pillars">Mission</a></li>
+        <li><a href="#why">Why AGI Standard</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+        <li><a href="#join">Join</a></li>
+        <li><a href="mailto:contact@agistandard.org" class="nav-cta">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="hero-content">
+      <div class="hero-tag">Initiative Launched · 2026</div>
+      <h1>
+        <span class="line-1">Global Union for</span>
+        <span class="line-2">AGI Standards</span>
+      </h1>
+      <p class="hero-sub">
+        Uniting scientists, ethicists, and policymakers worldwide to establish unified, transparent standards for Artificial General Intelligence — before it's too late.
+      </p>
+      <div class="hero-btns">
+        <a href="#join" class="btn-glow">Join the Union →</a>
+        <a href="#why" class="btn-ghost">Our Mission</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">147</div>
+          <div class="stat-label">Nations Engaged</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">4,200+</div>
+          <div class="stat-label">Researchers</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Working Groups</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">2026</div>
+          <div class="stat-label">Founded</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marqueeTrack">
+      <span class="marquee-item">AI Safety Standards</span>
+      <span class="marquee-item">Global Governance</span>
+      <span class="marquee-item">Ethical Frameworks</span>
+      <span class="marquee-item">Human Rights Protection</span>
+      <span class="marquee-item">Transparent Evaluation</span>
+      <span class="marquee-item">International Cooperation</span>
+      <span class="marquee-item">Responsible Innovation</span>
+      <span class="marquee-item">AGI Certification</span>
+      <span class="marquee-item">Open Research</span>
+      <span class="marquee-item">Policy Development</span>
+      <span class="marquee-item">AI Safety Standards</span>
+      <span class="marquee-item">Global Governance</span>
+      <span class="marquee-item">Ethical Frameworks</span>
+      <span class="marquee-item">Human Rights Protection</span>
+      <span class="marquee-item">Transparent Evaluation</span>
+      <span class="marquee-item">International Cooperation</span>
+      <span class="marquee-item">Responsible Innovation</span>
+      <span class="marquee-item">AGI Certification</span>
+      <span class="marquee-item">Open Research</span>
+      <span class="marquee-item">Policy Development</span>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars" id="pillars">
+    <div class="wrap">
+      <div class="pillars-header">
+        <div>
+          <span class="section-label">Core Mission</span>
+          <h2 class="section-title">Six Pillars of<br>Global AGI Governance</h2>
+        </div>
+        <p class="section-sub">Our work is organized around six interconnected pillars, each critical to ensuring AGI development benefits all of humanity.</p>
+      </div>
+      <div class="pillars-grid reveal">
+        <div class="pillar">
+          <div class="pillar-num">01</div>
+          <span class="pillar-icon">🔬</span>
+          <h3>Unified Standards</h3>
+          <p>Establish internationally recognized metrics and benchmarks to evaluate AGI capabilities with complete scientific rigor and transparency.</p>
+          <div class="pillar-arrow">→</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">02</div>
+          <span class="pillar-icon">🛡️</span>
+          <h3>Humanity Protection</h3>
+          <p>Develop robust legal and ethical frameworks to safeguard human rights, dignity, and security from potential AGI-related threats.</p>
+          <div class="pillar-arrow">→</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">03</div>
+          <span class="pillar-icon">🌍</span>
+          <h3>Global Collaboration</h3>
+          <p>Unite the world's leading researchers and institutions across all nations to address this civilizational challenge collectively.</p>
+          <div class="pillar-arrow">→</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">04</div>
+          <span class="pillar-icon">📡</span>
+          <h3>Radical Transparency</h3>
+          <p>All research, standards, and findings published openly so every nation and community can access and contribute to our knowledge base.</p>
+          <div class="pillar-arrow">→</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">05</div>
+          <span class="pillar-icon">⚖️</span>
+          <h3>Equity & Justice</h3>
+          <p>Guarantee fair and equitable distribution of AGI benefits across all nations and peoples, preventing concentration of transformative power.</p>
+          <div class="pillar-arrow">→</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-num">06</div>
+          <span class="pillar-icon">🚀</span>
+          <h3>Responsible Innovation</h3>
+          <p>Foster technological progress that is matched by ethical responsibility, ensuring innovation serves humanity rather than endangering it.</p>
+          <div class="pillar-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section class="why" id="why">
+    <div class="wrap">
+      <div class="why-grid">
+        <div class="why-visual">
+          <div class="globe-ring"></div>
+          <div class="globe-ring"></div>
+          <div class="globe-ring"></div>
+          <div class="globe-center">🌐</div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+          <div class="node"></div>
+        </div>
+        <div class="why-text reveal">
+          <span class="section-label">Why AGI Standard?</span>
+          <h2 class="section-title">The Urgency Is Real.<br>The Window Is Narrow.</h2>
+          <p class="section-sub">Artificial General Intelligence is not merely a technological milestone — it represents a fundamental inflection point in human civilization. Without unified global standards, we face unprecedented risks.</p>
+          <div class="why-list">
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">Unified definition and taxonomy of Artificial General Intelligence</div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">Safe and independently verifiable evaluation standards</div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">Binding international legal framework with enforcement mechanisms</div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">Continuous oversight, monitoring, and real-time risk assessment</div>
+            </div>
+            <div class="why-item">
+              <div class="why-check">✓</div>
+              <div class="why-item-text">Guaranteed protection of fundamental human rights in the AGI era</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <div class="quote-band">
+    <div class="wrap">
+      <blockquote>"We cannot leave humanity's future <em>to chance</em>.<br>We need unified standards — and we need them <em>now</em>."</blockquote>
+      <p class="quote-attr">— AGI Standard Founding Charter · 2026</p>
+    </div>
+  </div>
+
+  <!-- ROADMAP -->
+  <section class="timeline-section" id="roadmap">
+    <div class="wrap">
+      <span class="section-label">Roadmap</span>
+      <h2 class="section-title">Our Path Forward</h2>
+      <div class="timeline reveal">
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-year">Q2 2026 — NOW</div>
+          <div class="tl-title">Foundation & Coalition Building</div>
+          <div class="tl-desc">Assembling founding members, establishing governance structure, and defining the initial research agenda across six working groups.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background: var(--gold); box-shadow: 0 0 16px var(--gold);"></div>
+          <div class="tl-year">Q4 2026</div>
+          <div class="tl-title">First AGI Definition Framework</div>
+          <div class="tl-desc">Publishing the inaugural consensus document: a scientifically grounded, internationally reviewed definition of Artificial General Intelligence.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background: var(--mid); box-shadow: none; border: 1px solid var(--glow);"></div>
+          <div class="tl-year">2027</div>
+          <div class="tl-title">Evaluation Standards Release</div>
+          <div class="tl-desc">Open-source benchmark suite for AGI capability assessment, alongside peer-reviewed safety evaluation protocols.</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot" style="background: var(--mid); box-shadow: none; border: 1px solid var(--glow);"></div>
+          <div class="tl-year">2028</div>
+          <div class="tl-title">International Treaty Proposal</div>
+          <div class="tl-desc">Submitting a proposed international governance treaty to the United Nations and regional bodies for ratification.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section class="join-section" id="join">
+    <div class="wrap">
+      <div class="join-card">
+        <div class="join-inner">
+          <div class="join-left">
+            <span class="section-label">Get Involved</span>
+            <h2 class="section-title" style="font-size: 2rem;">Join the<br>Global Union</h2>
+            <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-top: 1rem;">
+              Whether you're a researcher, ethicist, policy expert, or technologist — your expertise is vital to shaping safe AGI governance for all of humanity.
             </p>
-            <div class="cta-buttons">
-                <a href="#join" class="btn btn-primary">Join Now</a>
-                <a href="#mission" class="btn btn-secondary">Learn More</a>
+            <div class="roles">
+              <div class="role-tag"><span class="dot"></span>AI Researchers & Scientists</div>
+              <div class="role-tag"><span class="dot"></span>Ethicists & Philosophers</div>
+              <div class="role-tag"><span class="dot"></span>Policy Makers & Legal Experts</div>
+              <div class="role-tag"><span class="dot"></span>Safety Engineers & Evaluators</div>
             </div>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <h2 class="section-title">Our Mission</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">🔬</div>
-                    <h3>Unified Standards</h3>
-                    <p>Establish international standards to measure and evaluate Artificial General Intelligence with complete transparency</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🛡️</div>
-                    <h3>Humanity Protection</h3>
-                    <p>Develop legal and ethical frameworks to protect humanity from the risks of advanced artificial intelligence</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌍</div>
-                    <h3>Global Collaboration</h3>
-                    <p>Unite the world's brightest minds from all nations to work in harmony on this critical civilizational challenge</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Transparency</h3>
-                    <p>Publish all research and standards openly so the entire world can benefit from our collective knowledge</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">⚖️</div>
-                    <h3>Equity & Justice</h3>
-                    <p>Ensure fair distribution of AGI benefits across all nations and peoples without discrimination</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Responsible Innovation</h3>
-                    <p>Encourage technological innovation while ensuring ethical responsibility and social accountability</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mission Section -->
-    <section class="mission" id="mission">
-        <div class="container">
-            <div class="mission-content">
-                <div class="mission-text">
-                    <h2>Why AGI Standard?</h2>
-                    <p>
-                        Artificial General Intelligence (AGI) is not merely a technological advancement—it represents a pivotal turning point in human civilization. 
-                        Without unified standards and ethical frameworks, we risk facing genuine threats to global security, justice, and human dignity.
-                    </p>
-                    <p>
-                        AGI Standard is the solution: a global platform bringing together the world's finest scientific, legal, and ethical minds to establish 
-                        unified standards that protect humanity while enabling responsible innovation.
-                    </p>
-                    <ul class="mission-list">
-                        <li>Unified definition of Artificial General Intelligence</li>
-                        <li>Safe and transparent evaluation standards</li>
-                        <li>International legal framework</li>
-                        <li>Oversight and monitoring mechanisms</li>
-                        <li>Protection of human rights</li>
-                    </ul>
-                </div>
-                <div style="text-align: center;">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">🌐</div>
-                    <p style="color: #cbd5e1; font-style: italic;">
-                        "We cannot leave humanity's future to chance. We need unified standards now."
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Join Section -->
-    <section class="join" id="join">
-        <div class="container">
-            <h2>Join the Global Union</h2>
-            <p>
-                Whether you're a researcher, scientist, or AI specialist, 
-                we welcome your contribution to shaping a safe future for humanity.
+          </div>
+          <div class="join-right">
+            <h3>Stay Informed</h3>
+            <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7;">
+              Receive the latest research updates, working group invitations, and opportunities to contribute to this critical global initiative.
             </p>
-            <form class="email-form" onsubmit="handleSubmit(event)">
-                <input type="email" placeholder="Enter your email address" required>
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-            </form>
-            <p style="margin-top: 1rem; font-size: 0.9rem; color: #94a3b8;">
-                We'll send you the latest developments and opportunities to contribute to this initiative
-            </p>
-        </div>
-    </section>
-
-    <!-- Legal Disclaimer Section -->
-    <section class="disclaimer">
-        <div class="container">
-            <h3>Legal Disclaimer</h3>
-            <div class="disclaimer-content">
-                <p>
-                    <strong>Important Notice:</strong> AGI Standard (agistandard.org) is an independent, non-commercial research and academic initiative. 
-                    This website does not represent any government agency, commercial company, or official international organization.
-                </p>
-                <p>
-                    <strong>Ownership and Management:</strong> This website is managed by independent researchers and specialists in the field of artificial general intelligence. 
-                    We are not affiliated with OpenAI, Google, Anthropic, or any other technology company.
-                </p>
-                <p>
-                    <strong>Purpose:</strong> The sole purpose of this website is to promote scientific and academic discussion about AGI standards 
-                    and to protect humanity from its potential risks.
-                </p>
-                <p>
-                    <strong>Liability:</strong> We assume no responsibility for any damages resulting from the use of information on this website. 
-                    All information is provided "as is" without any warranty or guarantee.
-                </p>
-                <p>
-                    <strong>Contact:</strong> For any legal inquiries or complaints, please contact: <a href="mailto:legal@agistandard.org" style="color: var(--accent-light);">legal@agistandard.org</a>
-                </p>
+            <div class="input-group">
+              <input type="email" placeholder="your@institution.edu" id="emailInput" />
+              <button class="btn-glow" onclick="handleSubmit()" style="white-space: nowrap; cursor: none;">Subscribe →</button>
             </div>
-            <div class="disclaimer-footer">
-                <p>
-                    Last Updated: 2026 | 
-                    <a href="#">Privacy Policy</a> | 
-                    <a href="#">Terms of Use</a>
-                </p>
-            </div>
-        </div>
-    </section>
+            <p class="input-note">No spam. Unsubscribe anytime. Your data is never shared.</p>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 AGI Standard. All rights reserved.</p>
-            <p>A global open platform for unified Artificial General Intelligence standards</p>
-            <div class="social-links">
-                <a href="https://twitter.com" target="_blank">Twitter</a>
-                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-                <a href="mailto:contact@agistandard.org">Email</a>
+            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--edge);">
+              <p style="font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">Direct Contact</p>
+              <a href="mailto:contact@agistandard.org" style="color: var(--glow); text-decoration: none; font-size: 0.9rem;">contact@agistandard.org</a>
             </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        function handleSubmit(event) {
-            event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value;
-            alert(`Thank you for subscribing! We'll send updates to: ${email}`);
-            event.target.reset();
+  <!-- DISCLAIMER -->
+  <section class="disclaimer-section">
+    <div class="wrap">
+      <div class="disclaimer-grid">
+        <div class="disclaimer-label">Legal Disclaimer</div>
+        <div class="disclaimer-body">
+          <p><strong>Independent Initiative:</strong> AGI Standard (agistandard.org) is an independent, non-commercial research and academic initiative. This website does not represent any government agency, commercial company, or official international organization.</p>
+          <p><strong>No Affiliation:</strong> We are not affiliated with OpenAI, Google, Anthropic, or any technology company. This platform is managed by independent researchers and specialists in artificial general intelligence.</p>
+          <p><strong>Purpose:</strong> The sole purpose of this platform is to promote scientific and academic discussion on AGI standards and to protect humanity from potential risks of advanced AI systems.</p>
+          <p><strong>Liability:</strong> All information provided "as is" without warranty. For legal inquiries: <a href="mailto:legal@agistandard.org">legal@agistandard.org</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand">AGI<span>Standard</span></div>
+          <div class="footer-copy" style="margin-top: 0.4rem;">© 2026 AGI Standard · All rights reserved</div>
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="https://twitter.com" target="_blank">Twitter</a>
+          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+          <a href="mailto:contact@agistandard.org">Email</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring   = document.getElementById('cursor-ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+    function animCursor() {
+      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animCursor);
+    }
+    animCursor();
+
+    document.querySelectorAll('a, button, input').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '20px'; cursor.style.height = '20px';
+        ring.style.width = '50px'; ring.style.height = '50px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '12px'; cursor.style.height = '12px';
+        ring.style.width = '36px'; ring.style.height = '36px';
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Smooth nav scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const t = document.querySelector(a.getAttribute('href'));
+        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+
+    // Nav background on scroll
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.style.background = window.scrollY > 50
+        ? 'rgba(5,10,15,0.98)'
+        : 'rgba(5,10,15,0.7)';
+    });
+
+    // Subscribe
+    function handleSubmit() {
+      const input = document.getElementById('emailInput');
+      const email = input.value.trim();
+      if (!email || !email.includes('@')) {
+        input.style.borderColor = '#ff6b2b';
+        setTimeout(() => { input.style.borderColor = ''; }, 2000);
+        return;
+      }
+      input.value = '';
+      input.placeholder = '✓ Subscribed! Thank you.';
+      input.style.borderColor = 'var(--glow)';
+      setTimeout(() => {
+        input.placeholder = 'your@institution.edu';
+        input.style.borderColor = '';
+      }, 4000);
+    }
+
+    // Counter animation
+    function animateCounter(el, end, suffix = '') {
+      let start = 0;
+      const dur = 1800;
+      const step = dur / 60;
+      const increment = end / 60;
+      const timer = setInterval(() => {
+        start += increment;
+        if (start >= end) { start = end; clearInterval(timer); }
+        el.textContent = Math.floor(start).toLocaleString() + suffix;
+      }, step);
+    }
+
+    const statsObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const nums = e.target.querySelectorAll('.stat-num');
+          nums.forEach(n => {
+            const raw = n.textContent.replace(/[^0-9]/g, '');
+            animateCounter(n, parseInt(raw));
+          });
+          statsObserver.unobserve(e.target);
         }
+      });
+    }, { threshold: 0.5 });
 
-        // Smooth scroll for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
+    const statsEl = document.querySelector('.hero-stats');
+    if (statsEl) statsObserver.observe(statsEl);
+  </script>
 </body>
 </html>
