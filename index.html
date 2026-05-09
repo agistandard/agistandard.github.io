@@ -3,1050 +3,883 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AGI Standard — Global Union for Artificial General Intelligence Standards</title>
+  <title>AGI Standard — Global Union for AGI Standards</title>
   <meta name="description" content="A global platform unifying standards for Artificial General Intelligence and protecting humanity from its risks" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --ink:     #050a0f;
-      --surface: #080e16;
-      --panel:   #0c1521;
-      --edge:    #112030;
-      --mid:     #1a3050;
-      --glow:    #00c6ff;
-      --glow2:   #0072ff;
-      --white:   #e8f2ff;
-      --muted:   #6a90b8;
-      --warn:    #ff6b2b;
-      --gold:    #c8a44a;
-      --mono:    'JetBrains Mono', monospace;
-      --head:    'Syne', sans-serif;
-      --body:    'DM Sans', sans-serif;
-      --r: 10px;
+      --bg:       #040810;
+      --bg2:      #070d1a;
+      --surface:  #0b1326;
+      --border:   rgba(56,100,200,0.18);
+      --accent:   #2a6ef5;
+      --accent2:  #00c6ff;
+      --glow:     rgba(42,110,245,0.35);
+      --text:     #e8edf8;
+      --muted:    #7a8baa;
+      --white:    #ffffff;
+      --serif:    'Syne', sans-serif;
+      --body:     'DM Sans', sans-serif;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; font-size: 16px; }
 
     body {
       font-family: var(--body);
-      background: var(--ink);
-      color: var(--white);
+      background: var(--bg);
+      color: var(--text);
       overflow-x: hidden;
-      cursor: none;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Custom Cursor ─────────────────────────────── */
-    #cursor {
-      position: fixed; z-index: 9999; pointer-events: none;
-      width: 12px; height: 12px;
-      background: var(--glow);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      mix-blend-mode: screen;
-      transition: transform 0.1s, width 0.2s, height 0.2s, opacity 0.2s;
-    }
-    #cursor-ring {
-      position: fixed; z-index: 9998; pointer-events: none;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(0,198,255,0.4);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: transform 0.15s ease, width 0.3s, height 0.3s;
-    }
-    body:hover #cursor { opacity: 1; }
-
-    /* ── Noise Overlay ─────────────────────────────── */
+    /* ─── NOISE OVERLAY ─── */
     body::before {
       content: '';
-      position: fixed; inset: 0; z-index: 1;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-      opacity: 0.025;
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: .5;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: clamp(.75rem,2vw,1.1rem) clamp(1rem,4vw,2.5rem);
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(4,8,16,.82);
+      backdrop-filter: blur(18px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(1.1rem,2.5vw,1.35rem);
+      letter-spacing: -.02em;
+      color: var(--white);
+      text-decoration: none;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .nav-logo span {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 8px var(--accent2);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    .nav-links {
+      display: flex; list-style: none;
+      gap: clamp(.8rem,3vw,2rem);
+    }
+    .nav-links a {
+      font-family: var(--body);
+      font-size: clamp(.78rem,1.4vw,.9rem);
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: .02em;
+      transition: color .25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-cta {
+      font-size: clamp(.75rem,1.3vw,.85rem) !important;
+      color: var(--accent2) !important;
+      border: 1px solid rgba(0,198,255,.3);
+      padding: .38rem .9rem;
+      border-radius: 100px;
+      transition: background .25s, color .25s !important;
+    }
+    .nav-cta:hover { background: var(--accent2) !important; color: var(--bg) !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: clamp(6rem,12vw,9rem) clamp(1rem,5vw,2rem) clamp(4rem,8vw,6rem);
+      position: relative; overflow: hidden;
+    }
+
+    /* radial glow blobs */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: clamp(400px,80vw,900px); height: clamp(400px,80vw,900px);
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(42,110,245,.14) 0%, transparent 70%);
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
       pointer-events: none;
     }
 
-    /* ── NAV ───────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 800;
-      height: 68px;
-      display: flex; align-items: center;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      background: rgba(5,10,15,0.7);
-      backdrop-filter: blur(20px) saturate(180%);
-      border-bottom: 1px solid rgba(0,198,255,0.08);
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .45rem;
+      background: rgba(42,110,245,.1);
+      border: 1px solid rgba(42,110,245,.3);
+      border-radius: 100px;
+      padding: .35rem 1rem;
+      font-size: clamp(.7rem,1.3vw,.82rem);
+      font-weight: 500;
+      color: var(--accent2);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: clamp(1.5rem,3vw,2rem);
+      animation: fadeUp .8s both;
     }
-    .nav-inner {
-      max-width: 1300px; margin: 0 auto; width: 100%;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    .logo {
-      font-family: var(--head);
-      font-size: 1.15rem; font-weight: 800;
-      letter-spacing: 0.08em; text-decoration: none;
-      color: var(--white);
-      display: flex; align-items: center; gap: 0.6rem;
-    }
-    .logo-mark {
-      width: 28px; height: 28px;
-      background: linear-gradient(135deg, var(--glow), var(--glow2));
-      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-      flex-shrink: 0;
-    }
-    .logo span { color: var(--glow); }
-    .nav-links {
-      display: flex; list-style: none; gap: 2.5rem; align-items: center;
-    }
-    .nav-links a {
-      font-family: var(--mono); font-size: 0.72rem; font-weight: 400;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
-      transition: color 0.25s;
-      position: relative;
-    }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
-      height: 1px; background: var(--glow);
-      transform: scaleX(0); transform-origin: left;
-      transition: transform 0.25s;
-    }
-    .nav-links a:hover { color: var(--glow); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-    .nav-cta {
-      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em;
-      text-transform: uppercase; text-decoration: none;
-      padding: 0.5rem 1.2rem;
-      border: 1px solid var(--glow);
-      color: var(--glow);
-      border-radius: 4px;
-      transition: background 0.25s, color 0.25s;
-    }
-    .nav-cta:hover { background: var(--glow); color: var(--ink); }
-
-    /* ── HERO ──────────────────────────────────────── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      position: relative;
-      padding: 120px 2rem 80px;
-      overflow: hidden;
-    }
-
-    /* Animated grid */
-    .grid-bg {
-      position: absolute; inset: 0; z-index: 0;
-      background-image:
-        linear-gradient(rgba(0,198,255,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,198,255,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridDrift 20s linear infinite;
-    }
-    @keyframes gridDrift {
-      from { background-position: 0 0; }
-      to   { background-position: 60px 60px; }
-    }
-
-    /* Orb glows */
-    .orb {
-      position: absolute; border-radius: 50%;
-      filter: blur(100px); pointer-events: none;
-      animation: orbPulse 8s ease-in-out infinite alternate;
-    }
-    .orb-1 {
-      width: 600px; height: 600px; top: -100px; left: -100px;
-      background: radial-gradient(circle, rgba(0,114,255,0.12), transparent 70%);
-      animation-delay: 0s;
-    }
-    .orb-2 {
-      width: 500px; height: 500px; bottom: -80px; right: -80px;
-      background: radial-gradient(circle, rgba(0,198,255,0.1), transparent 70%);
-      animation-delay: -4s;
-    }
-    .orb-3 {
-      width: 300px; height: 300px; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(200,164,74,0.06), transparent 70%);
-      animation-delay: -2s;
-    }
-    @keyframes orbPulse {
-      from { opacity: 0.6; transform: scale(1); }
-      to   { opacity: 1;   transform: scale(1.15); }
-    }
-
-    .hero-content {
-      position: relative; z-index: 2; max-width: 900px; margin: 0 auto;
-    }
-
-    .hero-tag {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--glow);
-      border: 1px solid rgba(0,198,255,0.2);
-      background: rgba(0,198,255,0.05);
-      padding: 0.4rem 1rem; border-radius: 100px;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.8s ease both;
-    }
-    .hero-tag::before {
+    .hero-badge::before {
       content: '';
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--glow);
-      animation: blink 1.5s ease-in-out infinite;
-    }
-    @keyframes blink {
-      0%, 100% { opacity: 1; } 50% { opacity: 0.2; }
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      box-shadow: 0 0 6px var(--accent2);
+      animation: pulse 1.8s ease-in-out infinite;
     }
 
     .hero h1 {
-      font-family: var(--head);
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      font-weight: 800; line-height: 1;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.8s 0.1s ease both;
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(2.4rem,7vw,5.2rem);
+      line-height: 1.06;
+      letter-spacing: -.04em;
+      color: var(--white);
+      max-width: 900px;
+      animation: fadeUp .9s .1s both;
     }
-    .hero h1 .line-1 { display: block; color: var(--white); }
-    .hero h1 .line-2 {
-      display: block;
-      background: linear-gradient(90deg, var(--glow) 0%, var(--glow2) 50%, var(--gold) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       background-clip: text;
-      background-size: 200% auto;
-      animation: shimmer 4s linear infinite, fadeUp 0.8s 0.2s ease both;
-    }
-    @keyframes shimmer {
-      from { background-position: 200% center; }
-      to   { background-position: 0% center; }
     }
 
     .hero-sub {
-      font-size: 1.15rem; font-weight: 300; color: var(--muted);
-      max-width: 580px; margin: 0 auto 3rem;
+      margin-top: clamp(1.2rem,2.5vw,1.8rem);
+      font-size: clamp(.95rem,1.8vw,1.2rem);
+      color: var(--muted);
+      max-width: 580px;
       line-height: 1.7;
-      animation: fadeUp 0.8s 0.3s ease both;
+      font-weight: 300;
+      animation: fadeUp 1s .2s both;
     }
 
-    .hero-btns {
-      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
-      animation: fadeUp 0.8s 0.4s ease both;
+    .hero-actions {
+      display: flex; gap: clamp(.6rem,2vw,1rem);
+      flex-wrap: wrap; justify-content: center;
+      margin-top: clamp(2rem,4vw,2.8rem);
+      animation: fadeUp 1s .35s both;
     }
 
-    .btn-glow {
-      position: relative; overflow: hidden;
-      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.12em;
-      text-transform: uppercase; text-decoration: none;
-      padding: 0.85rem 2.2rem;
-      background: linear-gradient(135deg, var(--glow2), var(--glow));
-      color: var(--ink); font-weight: 600;
-      border-radius: 6px; border: none; cursor: none;
-      transition: transform 0.2s, box-shadow 0.2s;
+    /* ─── BUTTONS ─── */
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: clamp(.65rem,1.5vw,.85rem) clamp(1.2rem,3vw,1.8rem);
+      border-radius: 100px;
+      font-family: var(--body);
+      font-size: clamp(.82rem,1.5vw,.95rem);
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: all .3s;
+      letter-spacing: .01em;
     }
-    .btn-glow::after {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.2));
-      opacity: 0; transition: opacity 0.2s;
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #1a56d6);
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(42,110,245,.4);
     }
-    .btn-glow:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(0,198,255,0.35); }
-    .btn-glow:hover::after { opacity: 1; }
-
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(42,110,245,.6);
+    }
     .btn-ghost {
-      font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.12em;
-      text-transform: uppercase; text-decoration: none;
-      padding: 0.85rem 2.2rem;
-      background: transparent;
-      color: var(--white);
-      border: 1px solid var(--edge);
-      border-radius: 6px; cursor: none;
-      transition: border-color 0.25s, color 0.25s, transform 0.2s;
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      color: var(--text);
     }
-    .btn-ghost:hover { border-color: var(--glow); color: var(--glow); transform: translateY(-3px); }
+    .btn-ghost:hover {
+      background: rgba(255,255,255,.1);
+      border-color: rgba(42,110,245,.4);
+      transform: translateY(-2px);
+    }
 
-    /* Hero stats bar */
-    .hero-stats {
-      display: flex; justify-content: center; gap: 0; margin-top: 5rem;
-      border: 1px solid var(--edge);
-      border-radius: var(--r);
-      overflow: hidden; max-width: 700px; margin-left: auto; margin-right: auto;
-      animation: fadeUp 0.8s 0.6s ease both;
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      width: 100%;
+      display: flex; justify-content: center;
+      gap: clamp(2rem,6vw,5rem);
+      flex-wrap: wrap;
+      margin-top: clamp(3rem,6vw,5rem);
+      padding-top: clamp(2rem,4vw,3rem);
+      border-top: 1px solid var(--border);
+      animation: fadeUp 1s .5s both;
     }
-    .stat {
-      flex: 1; padding: 1.4rem 1rem; text-align: center;
-      border-right: 1px solid var(--edge);
-      background: rgba(255,255,255,0.02);
-      transition: background 0.25s;
-    }
-    .stat:last-child { border-right: none; }
-    .stat:hover { background: rgba(0,198,255,0.05); }
-    .stat-num {
-      font-family: var(--head); font-size: 1.8rem; font-weight: 800;
-      color: var(--glow); line-height: 1;
-      margin-bottom: 0.3rem;
+    .stat { text-align: center; }
+    .stat-number {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem,3.5vw,2.4rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
     }
     .stat-label {
-      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.14em;
-      text-transform: uppercase; color: var(--muted);
+      font-size: clamp(.72rem,1.2vw,.82rem);
+      color: var(--muted);
+      margin-top: .3rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ─── GRID BACKGROUND LINES ─── */
+    .grid-bg {
+      position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: -1;
     }
+    .grid-bg svg { width: 100%; height: 100%; opacity: .07; }
 
-    /* ── SECTION BASE ──────────────────────────────── */
-    section { position: relative; z-index: 2; }
-    .wrap { max-width: 1300px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 4rem); }
+    /* ─── SECTION COMMON ─── */
+    section { position: relative; }
 
     .section-label {
-      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em;
-      text-transform: uppercase; color: var(--glow);
-      margin-bottom: 0.8rem; display: block;
+      display: inline-block;
+      font-size: clamp(.68rem,1.2vw,.78rem);
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: .9rem;
     }
     .section-title {
-      font-family: var(--head); font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800; letter-spacing: -0.02em;
-      color: var(--white); line-height: 1.1;
-      margin-bottom: 1.5rem;
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(1.8rem,4vw,3rem);
+      letter-spacing: -.03em;
+      color: var(--white);
+      line-height: 1.15;
     }
-    .section-sub {
-      font-size: 1rem; font-weight: 300; color: var(--muted);
-      max-width: 520px; line-height: 1.7;
+    .section-body {
+      font-size: clamp(.9rem,1.6vw,1.05rem);
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
     }
 
-    /* ── MARQUEE ───────────────────────────────────── */
-    .marquee-wrap {
-      padding: 1.8rem 0;
-      background: var(--panel);
-      border-top: 1px solid var(--edge);
-      border-bottom: 1px solid var(--edge);
-      overflow: hidden; position: relative; z-index: 2;
+    /* ─── MISSION ─── */
+    .mission {
+      padding: clamp(5rem,10vw,8rem) clamp(1rem,5vw,2.5rem);
+      background: var(--bg2);
     }
-    .marquee-track {
-      display: flex; gap: 3rem; width: max-content;
-      animation: marquee 30s linear infinite;
-    }
-    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    .marquee-item {
-      font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.16em;
-      text-transform: uppercase; color: var(--muted);
-      white-space: nowrap;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .marquee-item::after { content: '◆'; color: var(--glow); font-size: 0.5rem; }
-
-    /* ── PILLARS ───────────────────────────────────── */
-    .pillars { padding: 8rem 0; background: var(--surface); }
-    .pillars-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      margin-bottom: 4rem; flex-wrap: wrap; gap: 2rem;
-    }
-    .pillars-grid {
+    .mission-inner {
+      max-width: 1200px; margin: 0 auto;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--edge);
-      border: 1px solid var(--edge);
-      border-radius: var(--r);
-      overflow: hidden;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2.5rem,6vw,5rem);
+      align-items: center;
     }
-    .pillar {
-      background: var(--panel);
-      padding: 2.5rem;
-      position: relative; overflow: hidden;
-      transition: background 0.3s;
-    }
-    .pillar::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--glow), transparent);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .pillar:hover { background: rgba(0,198,255,0.04); }
-    .pillar:hover::before { opacity: 1; }
-    .pillar-num {
-      font-family: var(--mono); font-size: 0.65rem; color: var(--glow);
-      letter-spacing: 0.16em; margin-bottom: 1.5rem;
-    }
-    .pillar-icon {
-      font-size: 2rem; margin-bottom: 1rem; display: block;
-    }
-    .pillar h3 {
-      font-family: var(--head); font-size: 1.2rem; font-weight: 700;
-      color: var(--white); margin-bottom: 0.75rem;
-    }
-    .pillar p {
-      font-size: 0.9rem; font-weight: 300; color: var(--muted);
-      line-height: 1.7;
-    }
-    .pillar-arrow {
-      position: absolute; bottom: 2rem; right: 2rem;
-      width: 32px; height: 32px;
-      border: 1px solid var(--edge); border-radius: 50%;
+    .mission-visual {
+      position: relative;
       display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: 0.8rem;
-      transition: border-color 0.25s, color 0.25s, transform 0.25s;
     }
-    .pillar:hover .pillar-arrow { border-color: var(--glow); color: var(--glow); transform: translate(2px, -2px); }
-
-    /* ── WHY SECTION ───────────────────────────────── */
-    .why { padding: 8rem 0; }
-    .why-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+    .orbit-container {
+      position: relative;
+      width: clamp(220px,35vw,320px);
+      height: clamp(220px,35vw,320px);
     }
-    .why-visual {
-      position: relative; aspect-ratio: 1;
-    }
-    .globe-ring {
-      position: absolute; inset: 0; border-radius: 50%;
-      border: 1px solid rgba(0,198,255,0.12);
-      animation: rotateSlow 30s linear infinite;
-    }
-    .globe-ring:nth-child(2) {
-      inset: 10%; border-color: rgba(0,198,255,0.08);
-      animation-duration: 20s; animation-direction: reverse;
-    }
-    .globe-ring:nth-child(3) {
-      inset: 25%; border-color: rgba(200,164,74,0.15);
-      animation-duration: 15s;
-    }
-    .globe-center {
-      position: absolute; inset: 35%;
-      background: radial-gradient(circle at 40% 40%, var(--glow2), var(--ink));
+    .orbit-ring {
+      position: absolute; inset: 0;
       border-radius: 50%;
-      box-shadow: 0 0 60px rgba(0,114,255,0.4), 0 0 120px rgba(0,114,255,0.15);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2rem;
+      border: 1px solid rgba(42,110,245,.25);
+      animation: spin linear infinite;
     }
-    @keyframes rotateSlow {
-      from { transform: rotate(0deg); }
-      to   { transform: rotate(360deg); }
+    .orbit-ring:nth-child(1) { animation-duration: 12s; }
+    .orbit-ring:nth-child(2) {
+      inset: 15%;
+      border-color: rgba(0,198,255,.2);
+      animation-duration: 18s;
+      animation-direction: reverse;
     }
-    .node {
-      position: absolute;
+    .orbit-ring:nth-child(3) { inset: 30%; animation-duration: 8s; }
+    .orbit-dot {
+      position: absolute; top: -4px; left: 50%;
       width: 8px; height: 8px;
       border-radius: 50%;
-      background: var(--glow);
-      box-shadow: 0 0 12px var(--glow);
-      animation: nodeFloat 6s ease-in-out infinite alternate;
+      background: var(--accent2);
+      box-shadow: 0 0 10px var(--accent2);
+      transform: translateX(-50%);
     }
-    .node:nth-child(4) { top: 10%; left: 50%; animation-delay: 0s; }
-    .node:nth-child(5) { top: 50%; right: 5%; animation-delay: -2s; }
-    .node:nth-child(6) { bottom: 15%; left: 20%; animation-delay: -4s; }
-    .node:nth-child(7) { top: 30%; left: 5%; animation-delay: -1s; background: var(--gold); box-shadow: 0 0 12px var(--gold); }
-    @keyframes nodeFloat {
-      from { transform: translate(0,0) scale(1); opacity: 0.7; }
-      to   { transform: translate(4px,-8px) scale(1.3); opacity: 1; }
-    }
-
-    .why-text { }
-    .why-list { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
-    .why-item {
-      display: flex; align-items: flex-start; gap: 1rem;
-      padding: 1.2rem 1.4rem;
-      border: 1px solid var(--edge); border-radius: var(--r);
-      background: rgba(255,255,255,0.02);
-      transition: border-color 0.25s, background 0.25s;
-    }
-    .why-item:hover { border-color: rgba(0,198,255,0.25); background: rgba(0,198,255,0.04); }
-    .why-check {
-      width: 20px; height: 20px; flex-shrink: 0;
-      border-radius: 50%; background: rgba(0,198,255,0.12);
-      border: 1px solid rgba(0,198,255,0.25);
+    .orbit-core {
+      position: absolute; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; color: var(--glow); margin-top: 1px;
     }
-    .why-item-text { font-size: 0.92rem; font-weight: 400; color: #a8c4e0; line-height: 1.5; }
+    .orbit-icon {
+      font-size: clamp(2.5rem,6vw,3.5rem);
+      filter: drop-shadow(0 0 20px rgba(42,110,245,.6));
+    }
 
-    /* ── QUOTE ─────────────────────────────────────── */
-    .quote-band {
-      padding: 5rem 0;
-      background: var(--panel);
-      border-top: 1px solid var(--edge);
-      border-bottom: 1px solid var(--edge);
+    .mission-list {
+      list-style: none;
+      margin-top: 1.8rem;
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .mission-list li {
+      display: flex; align-items: flex-start; gap: .75rem;
+      font-size: clamp(.85rem,1.5vw,.98rem);
+      color: var(--muted);
+    }
+    .mission-list li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(42,110,245,.15);
+      border: 1px solid rgba(42,110,245,.4);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: .15rem;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232a6ef5' stroke-width='3'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+      background-size: 10px;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* ─── FEATURES ─── */
+    .features {
+      padding: clamp(5rem,10vw,8rem) clamp(1rem,5vw,2.5rem);
+      background: var(--bg);
+    }
+    .features-inner { max-width: 1200px; margin: 0 auto; }
+    .features-header { text-align: center; max-width: 650px; margin: 0 auto clamp(3rem,6vw,5rem); }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%,320px),1fr));
+      gap: clamp(1rem,2.5vw,1.5rem);
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: clamp(1.5rem,3vw,2.2rem);
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+    }
+    .feature-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 0, rgba(42,110,245,.08) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity .4s;
+    }
+    .feature-card:hover {
+      border-color: rgba(42,110,245,.5);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.4), 0 0 0 1px rgba(42,110,245,.15);
+    }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon-wrap {
+      width: clamp(44px,7vw,52px);
+      height: clamp(44px,7vw,52px);
+      border-radius: 12px;
+      background: rgba(42,110,245,.12);
+      border: 1px solid rgba(42,110,245,.25);
+      display: flex; align-items: center; justify-content: center;
+      font-size: clamp(1.3rem,2.5vw,1.6rem);
+      margin-bottom: 1.2rem;
+    }
+    .feature-card h3 {
+      font-family: var(--serif);
+      font-size: clamp(1rem,1.8vw,1.15rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: .6rem;
+      letter-spacing: -.01em;
+    }
+    .feature-card p {
+      font-size: clamp(.8rem,1.4vw,.9rem);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    /* ─── QUOTE SECTION ─── */
+    .quote-section {
+      padding: clamp(4rem,8vw,7rem) clamp(1rem,5vw,2.5rem);
+      background: var(--bg2);
       text-align: center;
     }
-    .quote-band blockquote {
-      font-family: var(--head);
-      font-size: clamp(1.4rem, 3vw, 2.2rem);
-      font-weight: 600; line-height: 1.4;
-      color: var(--white); max-width: 800px; margin: 0 auto 1.5rem;
-      letter-spacing: -0.01em;
+    .quote-inner {
+      max-width: 820px; margin: 0 auto;
     }
-    .quote-band blockquote em { color: var(--glow); font-style: normal; }
-    .quote-attr {
-      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--muted);
+    .quote-mark {
+      font-family: var(--serif);
+      font-size: clamp(4rem,10vw,7rem);
+      line-height: .7;
+      color: rgba(42,110,245,.3);
+      margin-bottom: 1rem;
+    }
+    .quote-text {
+      font-family: var(--serif);
+      font-size: clamp(1.2rem,3vw,2rem);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.5;
+      letter-spacing: -.02em;
+    }
+    .quote-text em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
-    /* ── TIMELINE ──────────────────────────────────── */
-    .timeline-section { padding: 8rem 0; background: var(--surface); }
-    .timeline { position: relative; margin-top: 4rem; padding-left: 3rem; }
-    .timeline::before {
-      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-      width: 1px; background: linear-gradient(to bottom, transparent, var(--glow), var(--glow2), transparent);
-    }
-    .tl-item {
-      position: relative; margin-bottom: 3rem;
-    }
-    .tl-dot {
-      position: absolute; left: -3.5rem;
-      top: 0.2rem;
-      width: 12px; height: 12px; border-radius: 50%;
-      background: var(--glow); box-shadow: 0 0 16px var(--glow);
-      border: 2px solid var(--ink);
-    }
-    .tl-year {
-      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.14em;
-      color: var(--glow); margin-bottom: 0.4rem;
-    }
-    .tl-title {
-      font-family: var(--head); font-size: 1.15rem; font-weight: 700;
-      color: var(--white); margin-bottom: 0.4rem;
-    }
-    .tl-desc { font-size: 0.9rem; font-weight: 300; color: var(--muted); line-height: 1.6; }
-
-    /* ── TEAM / JOIN ───────────────────────────────── */
-    .join-section { padding: 8rem 0; }
-    .join-card {
-      background: var(--panel);
-      border: 1px solid var(--edge);
-      border-radius: 16px;
-      overflow: hidden;
-      position: relative;
-    }
-    .join-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--glow), var(--gold), var(--glow2), transparent);
+    /* ─── JOIN ─── */
+    .join {
+      padding: clamp(5rem,10vw,8rem) clamp(1rem,5vw,2.5rem);
+      background: var(--bg);
+      text-align: center;
     }
     .join-inner {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+      max-width: 600px; margin: 0 auto;
     }
-    .join-left {
-      padding: 4rem;
-      border-right: 1px solid var(--edge);
-    }
-    .join-right {
-      padding: 4rem;
-      background: rgba(0,198,255,0.02);
-    }
-    .join-right h3 {
-      font-family: var(--head); font-size: 1.4rem; font-weight: 700;
-      color: var(--white); margin-bottom: 1.5rem;
-    }
-    .roles { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
-    .role-tag {
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em;
-      padding: 0.5rem 1rem; border-radius: 4px;
-      border: 1px solid var(--edge); color: var(--muted);
-      background: rgba(255,255,255,0.02);
-      width: fit-content;
-    }
-    .role-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--glow); }
+    .join-inner .section-title { margin-bottom: 1rem; }
+    .join-inner .section-body { margin-bottom: 2.5rem; }
 
-    .input-group { display: flex; gap: 0.5rem; margin-top: 1.5rem; }
-    .input-group input {
-      flex: 1; padding: 0.85rem 1.1rem;
-      background: var(--ink); border: 1px solid var(--edge);
-      border-radius: 6px; color: var(--white);
-      font-family: var(--body); font-size: 0.9rem;
-      outline: none; transition: border-color 0.25s;
+    .email-row {
+      display: flex; gap: .5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: .35rem;
+      max-width: 480px; margin: 0 auto;
     }
-    .input-group input::placeholder { color: var(--muted); }
-    .input-group input:focus { border-color: var(--glow); }
-    .input-note {
-      margin-top: 0.8rem;
-      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em;
+    .email-row input {
+      flex: 1;
+      background: transparent;
+      border: none; outline: none;
+      padding: .6rem 1rem;
+      font-family: var(--body);
+      font-size: clamp(.82rem,1.4vw,.92rem);
+      color: var(--text);
+    }
+    .email-row input::placeholder { color: var(--muted); }
+    .email-row button {
+      flex-shrink: 0;
+      padding: .6rem 1.4rem;
+      border-radius: 100px;
+      background: linear-gradient(135deg, var(--accent), #1a56d6);
+      color: #fff;
+      font-family: var(--body);
+      font-size: clamp(.78rem,1.3vw,.88rem);
+      font-weight: 600;
+      border: none; cursor: pointer;
+      transition: box-shadow .3s, transform .3s;
+      white-space: nowrap;
+    }
+    .email-row button:hover {
+      box-shadow: 0 4px 20px rgba(42,110,245,.5);
+      transform: scale(1.03);
+    }
+    .join-note {
+      margin-top: 1rem;
+      font-size: clamp(.72rem,1.2vw,.82rem);
       color: var(--muted);
     }
 
-    /* ── DISCLAIMER ────────────────────────────────── */
-    .disclaimer-section {
-      padding: 4rem 0;
-      background: var(--panel);
-      border-top: 1px solid var(--edge);
+    /* ─── DISCLAIMER ─── */
+    .disclaimer {
+      padding: clamp(3rem,6vw,5rem) clamp(1rem,5vw,2.5rem);
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+    }
+    .disclaimer-inner {
+      max-width: 1000px; margin: 0 auto;
+    }
+    .disclaimer h3 {
+      font-family: var(--serif);
+      font-size: clamp(.95rem,1.8vw,1.1rem);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      letter-spacing: -.01em;
     }
     .disclaimer-grid {
-      display: grid; grid-template-columns: 200px 1fr; gap: 3rem; align-items: start;
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr));
+      gap: 1.2rem;
     }
-    .disclaimer-label {
-      font-family: var(--head); font-size: 0.8rem; font-weight: 700;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      color: var(--warn); padding-top: 0.2rem;
-      display: flex; align-items: center; gap: 0.5rem;
+    .disclaimer-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.4rem;
     }
-    .disclaimer-label::before {
-      content: '⚠';
-      font-size: 1rem;
+    .disclaimer-item strong {
+      display: block;
+      font-size: clamp(.78rem,1.3vw,.88rem);
+      font-weight: 600;
+      color: var(--accent2);
+      margin-bottom: .45rem;
+      letter-spacing: .03em;
     }
-    .disclaimer-body {
-      font-size: 0.82rem; font-weight: 300; color: var(--muted);
-      line-height: 1.8; column-count: 2; column-gap: 3rem;
+    .disclaimer-item p {
+      font-size: clamp(.75rem,1.2vw,.85rem);
+      color: var(--muted);
+      line-height: 1.7;
     }
-    .disclaimer-body strong { color: #8aabcc; font-weight: 500; }
-    .disclaimer-body a { color: var(--glow); text-decoration: none; }
-    .disclaimer-body a:hover { text-decoration: underline; }
+    .disclaimer-item a { color: var(--accent2); text-decoration: none; }
+    .disclaimer-foot {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: .75rem;
+      font-size: clamp(.72rem,1.2vw,.82rem);
+      color: var(--muted);
+    }
+    .disclaimer-foot a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .disclaimer-foot a:hover { color: var(--accent2); }
 
-    /* ── FOOTER ────────────────────────────────────── */
+    /* ─── FOOTER ─── */
     footer {
-      background: var(--ink);
-      border-top: 1px solid var(--edge);
-      padding: 3rem 0;
+      padding: clamp(2rem,4vw,3rem) clamp(1rem,5vw,2.5rem);
+      background: var(--bg);
+      border-top: 1px solid var(--border);
     }
     .footer-inner {
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 1.5rem;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1.2rem;
     }
     .footer-brand {
-      font-family: var(--head); font-size: 0.95rem; font-weight: 800;
-      color: var(--muted); letter-spacing: 0.06em;
+      font-family: var(--serif);
+      font-weight: 800;
+      font-size: clamp(1rem,2vw,1.2rem);
+      color: var(--white);
+      letter-spacing: -.02em;
     }
-    .footer-brand span { color: var(--glow); }
-    .footer-copy { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; color: var(--muted); }
-    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-copy {
+      font-size: clamp(.72rem,1.2vw,.82rem);
+      color: var(--muted);
+    }
+    .footer-links {
+      display: flex; gap: 1.5rem;
+    }
     .footer-links a {
-      font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--muted); text-decoration: none;
-      transition: color 0.25s;
+      font-size: clamp(.75rem,1.3vw,.85rem);
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .25s;
     }
-    .footer-links a:hover { color: var(--glow); }
+    .footer-links a:hover { color: var(--accent2); }
 
-    /* ── SCROLL REVEAL ─────────────────────────────── */
+    /* ─── SCROLL REVEAL ─── */
     .reveal {
-      opacity: 0; transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
     }
     .reveal.visible {
-      opacity: 1; transform: translateY(0);
+      opacity: 1;
+      transform: none;
     }
 
-    /* ── RESPONSIVE ────────────────────────────────── */
-    @media (max-width: 900px) {
-      .pillars-grid { grid-template-columns: 1fr 1fr; }
-      .why-grid { grid-template-columns: 1fr; }
-      .why-visual { max-width: 360px; margin: 0 auto; }
-      .join-inner { grid-template-columns: 1fr; }
-      .join-left { border-right: none; border-bottom: 1px solid var(--edge); }
-      .disclaimer-grid { grid-template-columns: 1fr; }
-      .disclaimer-body { column-count: 1; }
-      .footer-inner { flex-direction: column; align-items: flex-start; }
-      nav ul { display: none; }
+    /* ─── KEYFRAMES ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
     }
-    @media (max-width: 600px) {
-      .pillars-grid { grid-template-columns: 1fr; }
-      .hero-stats { flex-direction: column; }
-      .stat { border-right: none; border-bottom: 1px solid var(--edge); }
-      .stat:last-child { border-bottom: none; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(.85); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── RESPONSIVE TWEAKS ─── */
+    @media (max-width: 768px) {
+      .mission-inner { grid-template-columns: 1fr; }
+      .mission-visual { order: -1; }
+      .orbit-container { width: 200px; height: 200px; }
+      .footer-inner { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+      .nav-links { display: none; }
+      .email-row { flex-direction: column; border-radius: 14px; }
+      .email-row input { padding: .8rem 1rem; }
+      .email-row button { border-radius: 10px; padding: .75rem; }
+    }
+    @media (max-width: 480px) {
+      .stats-bar { gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Custom cursor -->
-  <div id="cursor"></div>
-  <div id="cursor-ring"></div>
+<!-- ─── NAV ─── -->
+<nav>
+  <a href="#" class="nav-logo">AGI Standard <span></span></a>
+  <ul class="nav-links">
+    <li><a href="#mission">Mission</a></li>
+    <li><a href="#features">Pillars</a></li>
+    <li><a href="#join">Join</a></li>
+    <li><a href="mailto:contact@agistandard.org" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
 
-  <!-- NAV -->
-  <nav>
-    <div class="nav-inner">
-      <a href="#" class="logo">
-        <div class="logo-mark"></div>
-        AGI<span>Standard</span>
-      </a>
-      <ul class="nav-links">
-        <li><a href="#pillars">Mission</a></li>
-        <li><a href="#why">Why AGI Standard</a></li>
-        <li><a href="#roadmap">Roadmap</a></li>
-        <li><a href="#join">Join</a></li>
-        <li><a href="mailto:contact@agistandard.org" class="nav-cta">Contact</a></li>
+<!-- ─── HERO ─── -->
+<section class="hero" id="home">
+  <div class="grid-bg">
+    <svg viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+          <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(42,110,245,1)" stroke-width=".6"/>
+        </pattern>
+      </defs>
+      <rect width="1200" height="700" fill="url(#grid)"/>
+    </svg>
+  </div>
+
+  <div class="hero-badge">Global Initiative · Est. 2026</div>
+
+  <h1>
+    One Standard.<br/>
+    <em>One Humanity.</em>
+  </h1>
+
+  <p class="hero-sub">
+    A global platform uniting scientists, ethicists, and policymakers from every nation to establish unified, transparent standards for Artificial General Intelligence.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#join" class="btn btn-primary">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Join Now
+    </a>
+    <a href="#mission" class="btn btn-ghost">Learn More</a>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number">180+</div>
+      <div class="stat-label">Nations</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">4,200+</div>
+      <div class="stat-label">Researchers</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">12</div>
+      <div class="stat-label">Active Standards</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number">2026</div>
+      <div class="stat-label">Founded</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MISSION ─── -->
+<section class="mission" id="mission">
+  <div class="mission-inner">
+    <div class="reveal">
+      <span class="section-label">Why AGI Standard</span>
+      <h2 class="section-title">The Stakes Have Never Been Higher</h2>
+      <p class="section-body" style="margin-top:1rem;">
+        Artificial General Intelligence isn't a distant scenario — it's an imminent civilizational turning point. Without unified standards and robust ethical frameworks, we face genuine threats to global security, justice, and human dignity.
+      </p>
+      <p class="section-body" style="margin-top:.8rem;">
+        AGI Standard is the global answer: bringing together the world's finest scientific, legal, and ethical minds to build the frameworks that will define humanity's future.
+      </p>
+      <ul class="mission-list">
+        <li>Unified, internationally recognized AGI definitions</li>
+        <li>Safe, transparent evaluation and certification standards</li>
+        <li>Comprehensive international legal framework</li>
+        <li>Independent oversight and continuous monitoring</li>
+        <li>Universal protection of human rights and dignity</li>
       </ul>
     </div>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="grid-bg"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-    <div class="hero-content">
-      <div class="hero-tag">Initiative Launched · 2026</div>
-      <h1>
-        <span class="line-1">Global Union for</span>
-        <span class="line-2">AGI Standards</span>
-      </h1>
-      <p class="hero-sub">
-        Uniting scientists, ethicists, and policymakers worldwide to establish unified, transparent standards for Artificial General Intelligence — before it's too late.
-      </p>
-      <div class="hero-btns">
-        <a href="#join" class="btn-glow">Join the Union →</a>
-        <a href="#why" class="btn-ghost">Our Mission</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <div class="stat-num">147</div>
-          <div class="stat-label">Nations Engaged</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">4,200+</div>
-          <div class="stat-label">Researchers</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">6</div>
-          <div class="stat-label">Working Groups</div>
-        </div>
-        <div class="stat">
-          <div class="stat-num">2026</div>
-          <div class="stat-label">Founded</div>
+    <div class="mission-visual reveal">
+      <div class="orbit-container">
+        <div class="orbit-ring"><div class="orbit-dot"></div></div>
+        <div class="orbit-ring"><div class="orbit-dot" style="background:#2a6ef5;box-shadow:0 0 10px #2a6ef5;"></div></div>
+        <div class="orbit-ring"><div class="orbit-dot" style="background:#fff;box-shadow:0 0 6px rgba(255,255,255,.5);width:5px;height:5px;"></div></div>
+        <div class="orbit-core">
+          <div class="orbit-icon">🌐</div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track" id="marqueeTrack">
-      <span class="marquee-item">AI Safety Standards</span>
-      <span class="marquee-item">Global Governance</span>
-      <span class="marquee-item">Ethical Frameworks</span>
-      <span class="marquee-item">Human Rights Protection</span>
-      <span class="marquee-item">Transparent Evaluation</span>
-      <span class="marquee-item">International Cooperation</span>
-      <span class="marquee-item">Responsible Innovation</span>
-      <span class="marquee-item">AGI Certification</span>
-      <span class="marquee-item">Open Research</span>
-      <span class="marquee-item">Policy Development</span>
-      <span class="marquee-item">AI Safety Standards</span>
-      <span class="marquee-item">Global Governance</span>
-      <span class="marquee-item">Ethical Frameworks</span>
-      <span class="marquee-item">Human Rights Protection</span>
-      <span class="marquee-item">Transparent Evaluation</span>
-      <span class="marquee-item">International Cooperation</span>
-      <span class="marquee-item">Responsible Innovation</span>
-      <span class="marquee-item">AGI Certification</span>
-      <span class="marquee-item">Open Research</span>
-      <span class="marquee-item">Policy Development</span>
     </div>
   </div>
+</section>
 
-  <!-- PILLARS -->
-  <section class="pillars" id="pillars">
-    <div class="wrap">
-      <div class="pillars-header">
-        <div>
-          <span class="section-label">Core Mission</span>
-          <h2 class="section-title">Six Pillars of<br>Global AGI Governance</h2>
-        </div>
-        <p class="section-sub">Our work is organized around six interconnected pillars, each critical to ensuring AGI development benefits all of humanity.</p>
-      </div>
-      <div class="pillars-grid reveal">
-        <div class="pillar">
-          <div class="pillar-num">01</div>
-          <span class="pillar-icon">🔬</span>
-          <h3>Unified Standards</h3>
-          <p>Establish internationally recognized metrics and benchmarks to evaluate AGI capabilities with complete scientific rigor and transparency.</p>
-          <div class="pillar-arrow">→</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-num">02</div>
-          <span class="pillar-icon">🛡️</span>
-          <h3>Humanity Protection</h3>
-          <p>Develop robust legal and ethical frameworks to safeguard human rights, dignity, and security from potential AGI-related threats.</p>
-          <div class="pillar-arrow">→</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-num">03</div>
-          <span class="pillar-icon">🌍</span>
-          <h3>Global Collaboration</h3>
-          <p>Unite the world's leading researchers and institutions across all nations to address this civilizational challenge collectively.</p>
-          <div class="pillar-arrow">→</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-num">04</div>
-          <span class="pillar-icon">📡</span>
-          <h3>Radical Transparency</h3>
-          <p>All research, standards, and findings published openly so every nation and community can access and contribute to our knowledge base.</p>
-          <div class="pillar-arrow">→</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-num">05</div>
-          <span class="pillar-icon">⚖️</span>
-          <h3>Equity & Justice</h3>
-          <p>Guarantee fair and equitable distribution of AGI benefits across all nations and peoples, preventing concentration of transformative power.</p>
-          <div class="pillar-arrow">→</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-num">06</div>
-          <span class="pillar-icon">🚀</span>
-          <h3>Responsible Innovation</h3>
-          <p>Foster technological progress that is matched by ethical responsibility, ensuring innovation serves humanity rather than endangering it.</p>
-          <div class="pillar-arrow">→</div>
-        </div>
-      </div>
+<!-- ─── FEATURES ─── -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="features-header reveal">
+      <span class="section-label">Our Pillars</span>
+      <h2 class="section-title">Built on Six Foundations</h2>
+      <p class="section-body" style="margin-top:.9rem;">Every standard we develop rests on these core principles, ensuring our work remains aligned with humanity's long-term interests.</p>
     </div>
-  </section>
+    <div class="features-grid">
 
-  <!-- WHY -->
-  <section class="why" id="why">
-    <div class="wrap">
-      <div class="why-grid">
-        <div class="why-visual">
-          <div class="globe-ring"></div>
-          <div class="globe-ring"></div>
-          <div class="globe-ring"></div>
-          <div class="globe-center">🌐</div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-          <div class="node"></div>
-        </div>
-        <div class="why-text reveal">
-          <span class="section-label">Why AGI Standard?</span>
-          <h2 class="section-title">The Urgency Is Real.<br>The Window Is Narrow.</h2>
-          <p class="section-sub">Artificial General Intelligence is not merely a technological milestone — it represents a fundamental inflection point in human civilization. Without unified global standards, we face unprecedented risks.</p>
-          <div class="why-list">
-            <div class="why-item">
-              <div class="why-check">✓</div>
-              <div class="why-item-text">Unified definition and taxonomy of Artificial General Intelligence</div>
-            </div>
-            <div class="why-item">
-              <div class="why-check">✓</div>
-              <div class="why-item-text">Safe and independently verifiable evaluation standards</div>
-            </div>
-            <div class="why-item">
-              <div class="why-check">✓</div>
-              <div class="why-item-text">Binding international legal framework with enforcement mechanisms</div>
-            </div>
-            <div class="why-item">
-              <div class="why-check">✓</div>
-              <div class="why-item-text">Continuous oversight, monitoring, and real-time risk assessment</div>
-            </div>
-            <div class="why-item">
-              <div class="why-check">✓</div>
-              <div class="why-item-text">Guaranteed protection of fundamental human rights in the AGI era</div>
-            </div>
-          </div>
-        </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">🔬</div>
+        <h3>Unified Standards</h3>
+        <p>Establish international benchmarks to measure and evaluate Artificial General Intelligence with complete scientific transparency.</p>
       </div>
-    </div>
-  </section>
 
-  <!-- QUOTE -->
-  <div class="quote-band">
-    <div class="wrap">
-      <blockquote>"We cannot leave humanity's future <em>to chance</em>.<br>We need unified standards — and we need them <em>now</em>."</blockquote>
-      <p class="quote-attr">— AGI Standard Founding Charter · 2026</p>
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">🛡️</div>
+        <h3>Humanity Protection</h3>
+        <p>Develop robust legal and ethical frameworks that safeguard humanity from the risks of advanced artificial intelligence systems.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">🌍</div>
+        <h3>Global Collaboration</h3>
+        <p>Unite the world's brightest minds across all nations, disciplines, and cultures to work in harmony on this critical challenge.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">📊</div>
+        <h3>Open Transparency</h3>
+        <p>Publish all research and standards openly so the entire world can access, scrutinize, and build upon our collective knowledge.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">⚖️</div>
+        <h3>Equity & Justice</h3>
+        <p>Ensure equitable distribution of AGI benefits across all nations and peoples, eliminating systemic disparities and discrimination.</p>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon-wrap">🚀</div>
+        <h3>Responsible Innovation</h3>
+        <p>Champion technological progress while maintaining an unwavering commitment to ethical responsibility and social accountability.</p>
+      </div>
+
     </div>
   </div>
+</section>
 
-  <!-- ROADMAP -->
-  <section class="timeline-section" id="roadmap">
-    <div class="wrap">
-      <span class="section-label">Roadmap</span>
-      <h2 class="section-title">Our Path Forward</h2>
-      <div class="timeline reveal">
-        <div class="tl-item">
-          <div class="tl-dot"></div>
-          <div class="tl-year">Q2 2026 — NOW</div>
-          <div class="tl-title">Foundation & Coalition Building</div>
-          <div class="tl-desc">Assembling founding members, establishing governance structure, and defining the initial research agenda across six working groups.</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot" style="background: var(--gold); box-shadow: 0 0 16px var(--gold);"></div>
-          <div class="tl-year">Q4 2026</div>
-          <div class="tl-title">First AGI Definition Framework</div>
-          <div class="tl-desc">Publishing the inaugural consensus document: a scientifically grounded, internationally reviewed definition of Artificial General Intelligence.</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot" style="background: var(--mid); box-shadow: none; border: 1px solid var(--glow);"></div>
-          <div class="tl-year">2027</div>
-          <div class="tl-title">Evaluation Standards Release</div>
-          <div class="tl-desc">Open-source benchmark suite for AGI capability assessment, alongside peer-reviewed safety evaluation protocols.</div>
-        </div>
-        <div class="tl-item">
-          <div class="tl-dot" style="background: var(--mid); box-shadow: none; border: 1px solid var(--glow);"></div>
-          <div class="tl-year">2028</div>
-          <div class="tl-title">International Treaty Proposal</div>
-          <div class="tl-desc">Submitting a proposed international governance treaty to the United Nations and regional bodies for ratification.</div>
-        </div>
+<!-- ─── QUOTE ─── -->
+<section class="quote-section">
+  <div class="quote-inner reveal">
+    <div class="quote-mark">"</div>
+    <p class="quote-text">
+      We cannot leave <em>humanity's future</em> to chance.<br/>
+      Unified standards — built together — are our only path forward.
+    </p>
+  </div>
+</section>
+
+<!-- ─── JOIN ─── -->
+<section class="join" id="join">
+  <div class="join-inner">
+    <div class="reveal">
+      <span class="section-label">Join the Movement</span>
+      <h2 class="section-title">Shape the Future of AGI</h2>
+      <p class="section-body">Whether you're a researcher, policymaker, scientist, or concerned citizen — your voice matters. Join thousands already contributing to a safer AI future.</p>
+      <form class="email-row" onsubmit="handleSubmit(event)">
+        <input type="email" placeholder="Enter your email address" required />
+        <button type="submit">Subscribe</button>
+      </form>
+      <p class="join-note">No spam. Only the updates that matter. Unsubscribe anytime.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DISCLAIMER ─── -->
+<section class="disclaimer">
+  <div class="disclaimer-inner reveal">
+    <h3>Legal Disclaimer</h3>
+    <div class="disclaimer-grid">
+      <div class="disclaimer-item">
+        <strong>Independence</strong>
+        <p>AGI Standard (agistandard.org) is an independent, non-commercial research and academic initiative. We do not represent any government agency, commercial company, or official international body.</p>
+      </div>
+      <div class="disclaimer-item">
+        <strong>Ownership</strong>
+        <p>This platform is managed by independent researchers specializing in AGI. We have no affiliation with OpenAI, Google, Anthropic, or any other technology company.</p>
+      </div>
+      <div class="disclaimer-item">
+        <strong>Purpose</strong>
+        <p>Our sole purpose is to promote scientific and academic discourse around AGI standards and to protect humanity from potential risks through knowledge and collaboration.</p>
+      </div>
+      <div class="disclaimer-item">
+        <strong>Contact & Liability</strong>
+        <p>All information is provided "as is" without warranty. For legal inquiries: <a href="mailto:legal@agistandard.org">legal@agistandard.org</a></p>
       </div>
     </div>
-  </section>
-
-  <!-- JOIN -->
-  <section class="join-section" id="join">
-    <div class="wrap">
-      <div class="join-card">
-        <div class="join-inner">
-          <div class="join-left">
-            <span class="section-label">Get Involved</span>
-            <h2 class="section-title" style="font-size: 2rem;">Join the<br>Global Union</h2>
-            <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7; margin-top: 1rem;">
-              Whether you're a researcher, ethicist, policy expert, or technologist — your expertise is vital to shaping safe AGI governance for all of humanity.
-            </p>
-            <div class="roles">
-              <div class="role-tag"><span class="dot"></span>AI Researchers & Scientists</div>
-              <div class="role-tag"><span class="dot"></span>Ethicists & Philosophers</div>
-              <div class="role-tag"><span class="dot"></span>Policy Makers & Legal Experts</div>
-              <div class="role-tag"><span class="dot"></span>Safety Engineers & Evaluators</div>
-            </div>
-          </div>
-          <div class="join-right">
-            <h3>Stay Informed</h3>
-            <p style="font-size: 0.9rem; color: var(--muted); line-height: 1.7;">
-              Receive the latest research updates, working group invitations, and opportunities to contribute to this critical global initiative.
-            </p>
-            <div class="input-group">
-              <input type="email" placeholder="your@institution.edu" id="emailInput" />
-              <button class="btn-glow" onclick="handleSubmit()" style="white-space: nowrap; cursor: none;">Subscribe →</button>
-            </div>
-            <p class="input-note">No spam. Unsubscribe anytime. Your data is never shared.</p>
-
-            <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--edge);">
-              <p style="font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">Direct Contact</p>
-              <a href="mailto:contact@agistandard.org" style="color: var(--glow); text-decoration: none; font-size: 0.9rem;">contact@agistandard.org</a>
-            </div>
-          </div>
-        </div>
+    <div class="disclaimer-foot">
+      <span>Last Updated: 2026 · agistandard.org</span>
+      <div style="display:flex;gap:1.5rem;">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Use</a>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- DISCLAIMER -->
-  <section class="disclaimer-section">
-    <div class="wrap">
-      <div class="disclaimer-grid">
-        <div class="disclaimer-label">Legal Disclaimer</div>
-        <div class="disclaimer-body">
-          <p><strong>Independent Initiative:</strong> AGI Standard (agistandard.org) is an independent, non-commercial research and academic initiative. This website does not represent any government agency, commercial company, or official international organization.</p>
-          <p><strong>No Affiliation:</strong> We are not affiliated with OpenAI, Google, Anthropic, or any technology company. This platform is managed by independent researchers and specialists in artificial general intelligence.</p>
-          <p><strong>Purpose:</strong> The sole purpose of this platform is to promote scientific and academic discussion on AGI standards and to protect humanity from potential risks of advanced AI systems.</p>
-          <p><strong>Liability:</strong> All information provided "as is" without warranty. For legal inquiries: <a href="mailto:legal@agistandard.org">legal@agistandard.org</a></p>
-        </div>
-      </div>
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">AGI Standard</div>
+      <div class="footer-copy" style="margin-top:.35rem;">© 2026 AGI Standard. All rights reserved.</div>
     </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="wrap">
-      <div class="footer-inner">
-        <div>
-          <div class="footer-brand">AGI<span>Standard</span></div>
-          <div class="footer-copy" style="margin-top: 0.4rem;">© 2026 AGI Standard · All rights reserved</div>
-        </div>
-        <div class="footer-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="https://twitter.com" target="_blank">Twitter</a>
-          <a href="https://linkedin.com" target="_blank">LinkedIn</a>
-          <a href="mailto:contact@agistandard.org">Email</a>
-        </div>
-      </div>
+    <div class="footer-links">
+      <a href="https://twitter.com" target="_blank">X / Twitter</a>
+      <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+      <a href="mailto:contact@agistandard.org">Email</a>
     </div>
-  </footer>
+  </div>
+</footer>
 
-  <script>
-    // Cursor
-    const cursor = document.getElementById('cursor');
-    const ring   = document.getElementById('cursor-ring');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
-    function animCursor() {
-      cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
-      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-      requestAnimationFrame(animCursor);
-    }
-    animCursor();
-
-    document.querySelectorAll('a, button, input').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.style.width = '20px'; cursor.style.height = '20px';
-        ring.style.width = '50px'; ring.style.height = '50px';
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.style.width = '12px'; cursor.style.height = '12px';
-        ring.style.width = '36px'; ring.style.height = '36px';
-      });
-    });
-
-    // Scroll reveal
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-    // Smooth nav scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-      a.addEventListener('click', e => {
-        const t = document.querySelector(a.getAttribute('href'));
-        if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-      });
-    });
-
-    // Nav background on scroll
-    const nav = document.querySelector('nav');
-    window.addEventListener('scroll', () => {
-      nav.style.background = window.scrollY > 50
-        ? 'rgba(5,10,15,0.98)'
-        : 'rgba(5,10,15,0.7)';
-    });
-
-    // Subscribe
-    function handleSubmit() {
-      const input = document.getElementById('emailInput');
-      const email = input.value.trim();
-      if (!email || !email.includes('@')) {
-        input.style.borderColor = '#ff6b2b';
-        setTimeout(() => { input.style.borderColor = ''; }, 2000);
-        return;
+<script>
+  /* Scroll reveal */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
       }
-      input.value = '';
-      input.placeholder = '✓ Subscribed! Thank you.';
-      input.style.borderColor = 'var(--glow)';
-      setTimeout(() => {
-        input.placeholder = 'your@institution.edu';
-        input.style.borderColor = '';
-      }, 4000);
-    }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Counter animation
-    function animateCounter(el, end, suffix = '') {
-      let start = 0;
-      const dur = 1800;
-      const step = dur / 60;
-      const increment = end / 60;
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= end) { start = end; clearInterval(timer); }
-        el.textContent = Math.floor(start).toLocaleString() + suffix;
-      }, step);
-    }
+  /* Email submit */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email = e.target.querySelector('input').value;
+    const btn = e.target.querySelector('button');
+    btn.textContent = '✓ Subscribed!';
+    btn.style.background = 'linear-gradient(135deg,#059669,#047857)';
+    setTimeout(() => {
+      btn.textContent = 'Subscribe';
+      btn.style.background = '';
+      e.target.reset();
+    }, 3000);
+  }
 
-    const statsObserver = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          const nums = e.target.querySelectorAll('.stat-num');
-          nums.forEach(n => {
-            const raw = n.textContent.replace(/[^0-9]/g, '');
-            animateCounter(n, parseInt(raw));
-          });
-          statsObserver.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    const statsEl = document.querySelector('.hero-stats');
-    if (statsEl) statsObserver.observe(statsEl);
-  </script>
+  /* Smooth scroll */
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      const t = document.querySelector(this.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
 </body>
 </html>
