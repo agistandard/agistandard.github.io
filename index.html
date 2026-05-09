@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGI Standard - Global Union for Artificial General Intelligence Standards</title>
+    <meta name="description" content="A global platform unifying standards for Artificial General Intelligence and protecting humanity from its risks">
+    <meta name="keywords" content="AGI, artificial general intelligence, standards, AI safety, global governance">
+    <meta name="author" content="AGI Standard Initiative">
+    <meta property="og:title" content="AGI Standard - Global Union for AGI Standards">
+    <meta property="og:description" content="The global platform for unified AGI standards and governance">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --accent-light: #60a5fa;
+            --text-light: #f1f5f9;
+            --border: #334155;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 2rem;
+        }
+
+        nav .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-light);
+            text-decoration: none;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+
+        nav a:hover {
+            color: var(--accent-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%),
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(59,130,246,0.1)" stroke-width="1"/></pattern></defs><rect width="1200" height="600" fill="url(%23grid)"/></svg>');
+            background-attachment: fixed;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-light) 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-light);
+            border: 2px solid var(--accent-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--accent-light);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background: var(--secondary);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--accent-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(15, 23, 42, 0.5);
+            border: 1px solid var(--border);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-light);
+        }
+
+        .feature-card p {
+            color: #cbd5e1;
+            font-size: 0.95rem;
+        }
+
+        /* Mission Section */
+        .mission {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .mission-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .mission-text h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-light);
+        }
+
+        .mission-text p {
+            margin-bottom: 1rem;
+            color: #cbd5e1;
+            line-height: 1.8;
+        }
+
+        .mission-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .mission-list li {
+            padding: 0.5rem 0;
+            padding-left: 1rem;
+            color: #cbd5e1;
+            display: flex;
+            align-items: center;
+        }
+
+        .mission-list li:before {
+            content: "✓";
+            color: var(--accent-light);
+            font-weight: bold;
+            margin-right: 0.75rem;
+        }
+
+        /* Join Section */
+        .join {
+            padding: 5rem 0;
+            background: var(--secondary);
+            text-align: center;
+        }
+
+        .join h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-light);
+        }
+
+        .join p {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .email-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            background: rgba(15, 23, 42, 0.5);
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .email-form input::placeholder {
+            color: #94a3b8;
+        }
+
+        .email-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Legal Disclaimer Section */
+        .disclaimer {
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 2px solid var(--border);
+            padding: 3rem 0;
+        }
+
+        .disclaimer h3 {
+            color: var(--accent-light);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .disclaimer-content {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .disclaimer-content p {
+            margin-bottom: 1rem;
+        }
+
+        .disclaimer-content strong {
+            color: var(--accent-light);
+        }
+
+        .disclaimer-footer {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .disclaimer-footer a {
+            color: var(--accent-light);
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        .disclaimer-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            border-top: 1px solid var(--border);
+            padding: 2rem 0;
+            text-align: center;
+            color: #94a3b8;
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .social-links a {
+            color: var(--accent-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+
+            .mission-content {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+
+            .email-form input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="container">
+            <a href="#" class="logo">AGI Standard</a>
+            <ul>
+                <li><a href="#features">Mission</a></li>
+                <li><a href="#mission">Why AGI Standard</a></li>
+                <li><a href="#join">Join Us</a></li>
+                <li><a href="mailto:contact@agistandard.org">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>AGI Standard</h1>
+            <p>Global Union for Artificial General Intelligence Standards</p>
+            <p style="font-size: 1rem; color: #94a3b8; margin-bottom: 2rem;">
+                A global platform uniting scientists and experts from all nations to establish unified, safe standards for Artificial General Intelligence
+            </p>
+            <div class="cta-buttons">
+                <a href="#join" class="btn btn-primary">Join Now</a>
+                <a href="#mission" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Our Mission</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Unified Standards</h3>
+                    <p>Establish international standards to measure and evaluate Artificial General Intelligence with complete transparency</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Humanity Protection</h3>
+                    <p>Develop legal and ethical frameworks to protect humanity from the risks of advanced artificial intelligence</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Global Collaboration</h3>
+                    <p>Unite the world's brightest minds from all nations to work in harmony on this critical civilizational challenge</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Transparency</h3>
+                    <p>Publish all research and standards openly so the entire world can benefit from our collective knowledge</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Equity & Justice</h3>
+                    <p>Ensure fair distribution of AGI benefits across all nations and peoples without discrimination</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Responsible Innovation</h3>
+                    <p>Encourage technological innovation while ensuring ethical responsibility and social accountability</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission" id="mission">
+        <div class="container">
+            <div class="mission-content">
+                <div class="mission-text">
+                    <h2>Why AGI Standard?</h2>
+                    <p>
+                        Artificial General Intelligence (AGI) is not merely a technological advancement—it represents a pivotal turning point in human civilization. 
+                        Without unified standards and ethical frameworks, we risk facing genuine threats to global security, justice, and human dignity.
+                    </p>
+                    <p>
+                        AGI Standard is the solution: a global platform bringing together the world's finest scientific, legal, and ethical minds to establish 
+                        unified standards that protect humanity while enabling responsible innovation.
+                    </p>
+                    <ul class="mission-list">
+                        <li>Unified definition of Artificial General Intelligence</li>
+                        <li>Safe and transparent evaluation standards</li>
+                        <li>International legal framework</li>
+                        <li>Oversight and monitoring mechanisms</li>
+                        <li>Protection of human rights</li>
+                    </ul>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🌐</div>
+                    <p style="color: #cbd5e1; font-style: italic;">
+                        "We cannot leave humanity's future to chance. We need unified standards now."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Section -->
+    <section class="join" id="join">
+        <div class="container">
+            <h2>Join the Global Union</h2>
+            <p>
+                Whether you're a researcher, scientist, or AI specialist, 
+                we welcome your contribution to shaping a safe future for humanity.
+            </p>
+            <form class="email-form" onsubmit="handleSubmit(event)">
+                <input type="email" placeholder="Enter your email address" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+            <p style="margin-top: 1rem; font-size: 0.9rem; color: #94a3b8;">
+                We'll send you the latest developments and opportunities to contribute to this initiative
+            </p>
+        </div>
+    </section>
+
+    <!-- Legal Disclaimer Section -->
+    <section class="disclaimer">
+        <div class="container">
+            <h3>Legal Disclaimer</h3>
+            <div class="disclaimer-content">
+                <p>
+                    <strong>Important Notice:</strong> AGI Standard (agistandard.org) is an independent, non-commercial research and academic initiative. 
+                    This website does not represent any government agency, commercial company, or official international organization.
+                </p>
+                <p>
+                    <strong>Ownership and Management:</strong> This website is managed by independent researchers and specialists in the field of artificial general intelligence. 
+                    We are not affiliated with OpenAI, Google, Anthropic, or any other technology company.
+                </p>
+                <p>
+                    <strong>Purpose:</strong> The sole purpose of this website is to promote scientific and academic discussion about AGI standards 
+                    and to protect humanity from its potential risks.
+                </p>
+                <p>
+                    <strong>Liability:</strong> We assume no responsibility for any damages resulting from the use of information on this website. 
+                    All information is provided "as is" without any warranty or guarantee.
+                </p>
+                <p>
+                    <strong>Contact:</strong> For any legal inquiries or complaints, please contact: <a href="mailto:legal@agistandard.org" style="color: var(--accent-light);">legal@agistandard.org</a>
+                </p>
+            </div>
+            <div class="disclaimer-footer">
+                <p>
+                    Last Updated: 2026 | 
+                    <a href="#">Privacy Policy</a> | 
+                    <a href="#">Terms of Use</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 AGI Standard. All rights reserved.</p>
+            <p>A global open platform for unified Artificial General Intelligence standards</p>
+            <div class="social-links">
+                <a href="https://twitter.com" target="_blank">Twitter</a>
+                <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+                <a href="mailto:contact@agistandard.org">Email</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            alert(`Thank you for subscribing! We'll send updates to: ${email}`);
+            event.target.reset();
+        }
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
